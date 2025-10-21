@@ -24,6 +24,7 @@ export function UserModal() {
 
   const menuItemsLogout = [
     { href: "/browse", icon: CompassIcon, label: "Browse" },
+    { href: "/library", icon: BookMarkedIcon, label: "Library books" },
   ];
 
   const menuItemsLogedIn = [
@@ -72,35 +73,41 @@ export function UserModal() {
         onClick={() => setModalIsOpen(!modalIsOpen)}
         className="flex items-center gap-0.5 cursor-pointer"
       >
-        <UserRoundIcon size={24} className="text-gray-900" />
-        <ChevronDownIcon size={24} className="text-gray-900" />
+        <UserRoundIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
+        <ChevronDownIcon
+          className={`text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5 ${modalIsOpen && "rotate-180"} transition`}
+        />
       </button>
 
       {modalIsOpen && (
         <div
           ref={modalRef}
           id="user-modal"
-          className="absolute w-3xs bg-white shadow-sm rounded-sm top-[50px] right-0 z-10"
+          className="absolute xms:w-3xs w-[200px] bg-white dark:bg-gray-800 shadow-sm rounded-sm top-[40px] right-0 z-10 overflow-hidden"
         >
           {logged ? (
-            <div className="flex items-center gap-3 p-4  bg-cyan-800 rounded-tr-sm rounded-tl-sm">
+            <div className="flex items-center gap-3 xsm:p-4 p-3  bg-gray-400 dark:bg-gray-700 rounded-tr-sm rounded-tl-sm">
               <div>
                 <Image
-                  className="rounded-full"
+                  className="rounded-full xms:h-10 xms:w-10 h-9 w-9"
                   src={"/mock-user.jpg"}
                   alt="user photo"
                   width={48}
                   height={48}
                 />
               </div>
-              <p className="text-cyan-50 text-lg font-medium">Maria Adelan</p>
+              <p className="text-gray-50 xms:text-lg text-base font-medium">
+                Maria Adelan
+              </p>
             </div>
           ) : (
-            <div className="flex items-center gap-3 p-4  bg-cyan-800 rounded-tr-sm rounded-tl-sm">
-              <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gray-200">
-                <UserRoundIcon />
+            <div className="flex items-center gap-3 xsm:p-4 p-3  bg-gray-400 dark:bg-gray-700 rounded-tr-sm rounded-tl-sm">
+              <div className="xms:h-10 xms:w-10 h-9 w-9 rounded-full flex items-center justify-center bg-gray-200">
+                <UserRoundIcon className="text-gray-700 xms:w-6 xms:h-6 w-5 h-5" />
               </div>
-              <p className="text-cyan-50 text-lg font-medium">No user</p>
+              <p className="text-gray-50 xms:text-lg text-base font-medium">
+                No user
+              </p>
             </div>
           )}
           <ul>

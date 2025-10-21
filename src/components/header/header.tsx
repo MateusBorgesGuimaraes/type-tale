@@ -1,7 +1,8 @@
-import { BookMarkedIcon, CompassIcon, MoonIcon } from "lucide-react";
+import { BookMarkedIcon, CompassIcon } from "lucide-react";
 import Link from "next/link";
 import { Searchbar } from "./searchbar";
 import { UserModal } from "./user-modal";
+import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
 
 export function Header() {
   return (
@@ -9,39 +10,45 @@ export function Header() {
       <div className="wrapper flex justify-between items-center">
         <div className="flex items-center gap-20">
           <Link href={"/"}>
-            <img src={"/icon-black.svg"} alt="Typetale logo" />
+            <img
+              src={"/icon-black.svg"}
+              alt="Typetale logo"
+              className="dark:invert xms:w-[140px] xms:h-[56px] w-[100px] h-[38px]"
+            />
           </Link>
 
-          <ul className="flex items-center gap-8">
-            <li className="hover:bg-gray-200 px-2 py-1 rounded-sm transition">
+          <ul className="xm:flex hidden items-center gap-8">
+            <li className="hover:bg-gray-200 dark:hover:bg-gray-700 px-2 py-1 rounded-sm transition">
               <Link
                 className="flex items-center justify-center gap-1.5"
                 href={"/browse"}
               >
-                <CompassIcon size={24} className="text-gray-900" />
-                <p className="text-gray-900 font-normal text-xl">Browse</p>
+                <CompassIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
+                <p className="text-gray-900 dark:text-gray-50 font-normal text-xl">
+                  Browse
+                </p>
               </Link>
             </li>
 
-            <li className="hover:bg-gray-200 px-2 py-1 rounded-sm transition">
+            <li className="hover:bg-gray-200 dark:hover:bg-gray-700 px-2 py-1 rounded-sm transition">
               <Link
                 className="flex items-center justify-center gap-1.5"
                 href={"/library"}
               >
-                <BookMarkedIcon size={24} className="text-gray-900" />
-                <p className="text-gray-900 font-normal text-xl">Library</p>
+                <BookMarkedIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
+                <p className="text-gray-900 dark:text-gray-50 font-normal text-xl">
+                  Library
+                </p>
               </Link>
             </li>
           </ul>
         </div>
 
-        <div className="flex items-center gap-20 relative">
+        <div className="flex items-center md:gap-20 xms:gap-6 gap-2 relative">
           <Searchbar />
 
-          <div className="flex items-center gap-8">
-            <button className="cursor-pointer">
-              <MoonIcon size={24} className="text-gray-900" />
-            </button>
+          <div className="flex items-center xms:gap-4 gap-2">
+            <ThemeSwitcher />
             <span className="text-gray-400">|</span>
             <UserModal />
           </div>

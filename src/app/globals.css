@@ -1,5 +1,57 @@
 @import "tailwindcss";
 
+@variant dark (&:is(.dark *));
+
+@theme {
+  --breakpoint-xm: 67.5rem;
+  --breakpoint-xms: 41.25rem;
+  --breakpoint-sx: 30rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes text-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.8));
+  }
+}
+
+.animate-text-glow {
+  animation: text-glow 2.5s ease-in-out infinite;
+}
+
+html,
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+body {
+  background-color: oklch(98.5% 0.002 247.839);
+}
+
+html.dark body {
+  background-color: oklch(21% 0.034 264.665);
+}
+
 .wrapper {
   max-width: 1360px;
   margin: 0 auto;
