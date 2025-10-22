@@ -1,17 +1,17 @@
 type TitleProps = {
   children: string;
-  variant?: "glow" | "aura" | "main";
+  variant?: "main";
 };
 
-export function Title({ children, variant = "glow" }: TitleProps) {
+export function Title({ children, variant = "main" }: TitleProps) {
   const variants = {
     main: "",
-    glow: "bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-transparent bg-clip-text animate-text-glow",
-    aura: "text-white drop-shadow-[0_0_8px_rgba(0,255,255,0.6)] hover:drop-shadow-[0_0_16px_rgba(0,255,255,0.8)]",
   };
 
   return (
-    <h1 className={`text-3xl font-semibold text-cyan-950 ${variants[variant]}`}>
+    <h1
+      className={`text-2xl font-semibold text-cyan-950 dark:text-cyan-400 ${variants[variant]}`}
+    >
       {children}
     </h1>
   );

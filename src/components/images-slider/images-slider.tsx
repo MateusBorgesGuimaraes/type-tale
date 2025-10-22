@@ -31,12 +31,12 @@ export function ImagesSlider({ images }: ImageSliderProps) {
   useEffect(() => {
     const interval = setInterval(showNextImage, 5000);
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, []);
 
   return (
     <div className="w-full h-full relative overflow-hidden rounded-sm">
       <div
-        className="w-full h-full flex transition-transform duration-500 ease-in-out"
+        className="w-full h-full flex transition-transform duration-500 ease-in-out will-change-transform"
         style={{ transform: `translateX(${-100 * imageIndex}%)` }}
       >
         {images.map(({ url, alt, href }, index) => {

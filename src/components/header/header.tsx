@@ -6,7 +6,7 @@ import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
 
 export function Header() {
   return (
-    <nav className="border-b border-gray-200 py-3">
+    <nav className="border-b border-gray-200 dark:border-gray-700 py-3">
       <div className="wrapper flex justify-between items-center">
         <div className="flex items-center gap-20">
           <Link href={"/"}>
