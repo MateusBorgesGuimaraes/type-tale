@@ -1,7 +1,7 @@
 import { AnnoucementsList } from "@/components/announcements-list/announcements-list";
 import { ImagesSlider } from "@/components/images-slider/images-slider";
-import { RankingDisplay } from "@/components/ranking-display/ranking-display";
 import { RankingSection } from "@/components/ranking-section/ranking-section";
+import { TagsSection } from "@/components/tags-section/tags-section";
 import { Title } from "@/components/title/title";
 
 export default function Home() {
@@ -93,6 +93,32 @@ export default function Home() {
     },
   ];
 
+  const fanficsTags = [
+    "Naruto",
+    "One Piece",
+    "Bleach",
+    "Harry Potter",
+    "My Hero Academia",
+    "Attack on Titan",
+    "Demon Slayer",
+    "Jujutsu Kaisen",
+    "Dragon Ball",
+    "Fairy Tail",
+    "Black Clover",
+    "Hunter x Hunter",
+    "Percy Jackson",
+    "Marvel",
+    "DC Comics",
+    "Star Wars",
+    "Lord of the Rings",
+    "Game of Thrones",
+    "Fate Series",
+    "Fullmetal Alchemist",
+    "Genshin Impact",
+    "Pokemon",
+    "League of Legends",
+  ];
+
   return (
     <div>
       <section
@@ -130,6 +156,24 @@ export default function Home() {
           melhorAndamento: "/fanfic/ongoing",
           maisVistas: "/fanfic/most-viewed",
           melhorCompleta: "/fanfic/completed",
+        }}
+      />
+      <section className="py-8 overflow-hidden">
+        <div className="pb-6 mb-6 border-b border-gray-200">
+          <Title>Top Fanfics Tags</Title>
+        </div>
+        <div className="relative min-w-[1200px] overflow-hidden">
+          <TagsSection tagsName={fanficsTags} />
+        </div>
+      </section>
+      <RankingSection
+        ariaLabel="Originals Rankings"
+        stories={STORIES}
+        title="Originals Rankings"
+        queries={{
+          melhorAndamento: "/original/ongoing",
+          maisVistas: "/original/most-viewed",
+          melhorCompleta: "/original/completed",
         }}
       />
     </div>
