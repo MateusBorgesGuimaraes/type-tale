@@ -1,124 +1,21 @@
 import { AnnoucementsList } from "@/components/announcements-list/announcements-list";
+import { CardLink } from "@/components/card-link/card-link";
 import { ImagesSlider } from "@/components/images-slider/images-slider";
 import { RankingSection } from "@/components/ranking-section/ranking-section";
+import { SimpleStoryCard } from "@/components/story-cards/simple-story-card";
 import { TagsSection } from "@/components/tags-section/tags-section";
 import { Title } from "@/components/title/title";
+import {
+  IMAGES,
+  ANNOUCEMENTS,
+  FANFICS_TAGS,
+  STORIES,
+  RAMDOM_STORIES,
+  CARDS_LINK,
+  ORIGINALS_TAGS,
+} from "@/utils/mockup-arrays";
 
 export default function Home() {
-  const IMAGES = [
-    {
-      url: "/mock-highligth.jpg",
-      alt: "iamge1 alt text",
-      href: "/teste",
-    },
-    {
-      url: "/mock-highligth2.jpg",
-      alt: "iamge2 alt text",
-      href: "/teste",
-    },
-    {
-      url: "/mock-highligth.jpg",
-      alt: "iamge3 alt text",
-      href: "/teste",
-    },
-    {
-      url: "/mock-highligth2.jpg",
-      alt: "iamge4 alt text",
-      href: "/teste",
-    },
-  ];
-
-  const ANNOUCEMENTS = [
-    {
-      id: 1,
-      alt: "annoucement 1",
-      title: "New Features Released!",
-      content:
-        "We've just launched new customization options for user profiles. Try them out and make your space truly yours!",
-      imageUrl: "/mock-news.jpg",
-    },
-    {
-      id: 2,
-      alt: "annoucement 2",
-      title: "Weekly Writing Challenge",
-      content:
-        "Participate in our new challenge! Write a short story under 1000 words and compete for premium rewards.",
-      imageUrl: "/mock-news2.jpg",
-    },
-    {
-      id: 3,
-      alt: "annoucement 3",
-      title: "Maintenance Notice",
-      content:
-        "The platform will undergo scheduled maintenance this Friday at 2 AM (UTC). Please save your work in advance.",
-      imageUrl: "/mock-news3.jpg",
-    },
-  ];
-
-  const STORIES = [
-    {
-      id: 1,
-      title: "Harry Potter : uma historia de e se...",
-      mainGenre: "filmes e series",
-      rating: "4.8",
-      coverImage: "/mock-cover-1.jpg",
-    },
-    {
-      id: 2,
-      title: "A camara secreta: nvo ponto de vista",
-      mainGenre: "filmes e series",
-      rating: "4.4",
-      coverImage: "/mock-cover-2.jpg",
-    },
-    {
-      id: 3,
-      title: "One piece: o rei pirata na verdade é..",
-      mainGenre: "animes",
-      rating: "4.9",
-      coverImage: "/mock-cover-3.jpg",
-    },
-    {
-      id: 1,
-      title: "Harry Potter : uma historia de e se...",
-      mainGenre: "filmes e series",
-      rating: "4.8",
-      coverImage: "/mock-cover-1.jpg",
-    },
-    {
-      id: 2,
-      title: "A camara secreta: nvo ponto de vista",
-      mainGenre: "filmes e series",
-      rating: "4.4",
-      coverImage: "/mock-cover-2.jpg",
-    },
-  ];
-
-  const fanficsTags = [
-    "Naruto",
-    "One Piece",
-    "Bleach",
-    "Harry Potter",
-    "My Hero Academia",
-    "Attack on Titan",
-    "Demon Slayer",
-    "Jujutsu Kaisen",
-    "Dragon Ball",
-    "Fairy Tail",
-    "Black Clover",
-    "Hunter x Hunter",
-    "Percy Jackson",
-    "Marvel",
-    "DC Comics",
-    "Star Wars",
-    "Lord of the Rings",
-    "Game of Thrones",
-    "Fate Series",
-    "Fullmetal Alchemist",
-    "Genshin Impact",
-    "Pokemon",
-    "League of Legends",
-  ];
-
   return (
     <div>
       <section
@@ -127,7 +24,7 @@ export default function Home() {
       >
         <div className="col-span-12 lg:col-span-6 flex flex-col items-center lg:items-start">
           <span className="xms:self-auto self-start">
-            <Title variant="main">Destaques</Title>
+            <Title variant="main">Highlights</Title>
           </span>
           <section
             aria-label="Image Slider"
@@ -138,7 +35,7 @@ export default function Home() {
         </div>
         <div className="xm:col-span-5 xm:col-start-8 lg:col-span-6 lg:col-start-7 lg:row-auto row-2 col-span-12 lg:block flex flex-col items-center">
           <span className="sx:self-auto self-start">
-            <Title variant="main">Anúncios</Title>
+            <Title variant="main">Announcements</Title>
           </span>
           <section
             aria-label="Annoucements section"
@@ -158,12 +55,12 @@ export default function Home() {
           melhorCompleta: "/fanfic/completed",
         }}
       />
-      <section className="py-8 overflow-hidden">
-        <div className="pb-6 mb-6 border-b border-gray-200">
+      <section aria-label="Top Fanfics tags" className="py-8 overflow-hidden">
+        <div className="pb-6 mb-6 border-b border-gray-200 dark:border-gray-700">
           <Title>Top Fanfics Tags</Title>
         </div>
         <div className="relative min-w-[1200px] overflow-hidden">
-          <TagsSection tagsName={fanficsTags} />
+          <TagsSection tagsName={FANFICS_TAGS} />
         </div>
       </section>
       <RankingSection
@@ -176,6 +73,47 @@ export default function Home() {
           melhorCompleta: "/original/completed",
         }}
       />
+      <section aria-label="Random Choices, websites infos and Original Tags">
+        <div className="pb-8">
+          <div className="pt-8 pb-6 border-b border-gray-200 dark:border-gray-700">
+            <Title>Random Choices</Title>
+          </div>
+          <ul className="flex mt-6 lg:gap-7 gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 snap-x snap-mandatory">
+            {RAMDOM_STORIES.map(({ id, genre, coverImage, title }) => (
+              <li className="flex-shrink-0 snap-start " key={id}>
+                <SimpleStoryCard
+                  genre={genre}
+                  id={id}
+                  coverImage={coverImage}
+                  title={title}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="flex md:flex-row items-center flex-col gap-8 pb-8">
+          {CARDS_LINK.map(({ desc, image, link, title }, index) => (
+            <CardLink
+              desc={desc}
+              title={title}
+              image={image}
+              link={link}
+              key={index}
+            />
+          ))}
+        </div>
+        <section
+          aria-label="Top Originals tags"
+          className="py-8 overflow-hidden"
+        >
+          <div className="pb-6 mb-6 border-b border-gray-200 dark:border-gray-700">
+            <Title>Top Originals Tags</Title>
+          </div>
+          <div className="relative min-w-[1200px] overflow-hidden">
+            <TagsSection tagsName={ORIGINALS_TAGS} />
+          </div>
+        </section>
+      </section>
     </div>
   );
 }

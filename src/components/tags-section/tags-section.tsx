@@ -7,6 +7,7 @@ export function TagsSection({ tagsName }: TagsSectionProp) {
 
   return (
     <div className="flex flex-col gap-4 overflow-hidden group">
+      {/* Linha 1 */}
       <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <ul className="flex gap-6 flex-nowrap animate-marquee pause-on-hover">
           {extendedTags.map((tag, index) => (
@@ -20,6 +21,7 @@ export function TagsSection({ tagsName }: TagsSectionProp) {
         </ul>
       </div>
 
+      {/* Linha 2 (invertida) */}
       <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <ul className="flex gap-6 flex-nowrap animate-marquee-reverse pause-on-hover">
           {extendedTags.map((tag, index) => (

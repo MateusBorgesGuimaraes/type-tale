@@ -37,7 +37,7 @@ export function RankingSection({
           <div className="flex-shrink-0 snap-start">
             <RankingDisplay
               stories={stories}
-              title="Mais Vistas"
+              title="Most Viewed"
               query={queries.maisVistas}
             />
           </div>
@@ -45,7 +45,7 @@ export function RankingSection({
           <div className="flex-shrink-0 snap-start">
             <RankingDisplay
               stories={stories}
-              title="Melhores em andamento"
+              title="Best Ongoing"
               query={queries.melhorAndamento}
             />
           </div>
@@ -53,7 +53,7 @@ export function RankingSection({
           <div className="flex-shrink-0 snap-start">
             <RankingDisplay
               stories={stories}
-              title="Melhores concluídas"
+              title="Best completed"
               query={queries.melhorCompleta}
             />
           </div>
