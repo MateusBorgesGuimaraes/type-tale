@@ -1,5 +1,6 @@
 "use client";
 
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -11,9 +12,10 @@ import { useState, useEffect } from "react";
 
 type ImageSliderProps = {
   images: {
-    url: string;
-    alt: string;
-    href: string;
+    id: string;
+    title: string;
+    link: string;
+    banner: string;
   }[];
 };
 
@@ -39,26 +41,26 @@ export function ImagesSlider({ images }: ImageSliderProps) {
         className="w-full h-full flex transition-transform duration-500 ease-in-out will-change-transform"
         style={{ transform: `translateX(${-100 * imageIndex}%)` }}
       >
-        {images.map(({ url, alt, href }, index) => {
+        {images.map(({ id, title, link, banner }, index) => {
           const isActive = index === imageIndex;
 
           const ImageElement = (
             <img
-              src={url}
-              alt={alt}
+              src={transformLinkImage(banner)}
+              alt={title}
               className="object-cover w-full h-full block"
             />
           );
           return isActive ? (
             <Link
-              key={alt}
-              href={href}
+              key={id}
+              href={link}
               className="shrink-0 grow-0 w-full h-full"
             >
               {ImageElement}
             </Link>
           ) : (
-            <div key={alt} className="shrink-0 grow-0 w-full h-full">
+            <div key={id} className="shrink-0 grow-0 w-full h-full">
               {ImageElement}
             </div>
           );

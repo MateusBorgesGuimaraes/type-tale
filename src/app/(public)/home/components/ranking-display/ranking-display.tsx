@@ -25,7 +25,7 @@ export function RankingDisplay({ stories, query, title }: RankingDisplayProps) {
   ];
 
   return (
-    <div className="sx:max-w-[432px] max-w-[300px] w-full">
+    <div className="sx:max-w-[432px] max-w-[calc(100vw-32px)] w-full">
       <div className="flex w-full justify-between items-center">
         <h2 className="font-semibold text-cyan-950 dark:text-gray-50 py-1.5 px-3.5 bg-white dark:bg-gray-700 sx:text-xl text-lg w-full rounded-tl-sm">
           {title}

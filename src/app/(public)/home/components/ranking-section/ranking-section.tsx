@@ -1,5 +1,5 @@
+import { Title } from "@/components/ui/title/title";
 import { RankingDisplay } from "../ranking-display/ranking-display";
-import { Title } from "../title/title";
 
 type RankingDisplayProps = {
   stories: {

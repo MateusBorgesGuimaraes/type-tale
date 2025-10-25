@@ -20,7 +20,7 @@ export function AnnoucementsList({ annoucements }: AnnoucementsListProps) {
         >
           <div className="py-2">
             <Link href={"/"}>
-              <h3 className="text-gray-900 dark:text-gray-50 font-medium text-xl hover:text-cyan-600 transition">
+              <h3 className="text-gray-900 dark:text-gray-50 font-medium text-xl hover:text-cyan-400 dark:hover:text-cyan-300 transition">
                 {annoucement.title}
               </h3>
             </Link>

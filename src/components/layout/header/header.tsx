@@ -2,7 +2,7 @@ import { BookMarkedIcon, CompassIcon } from "lucide-react";
 import Link from "next/link";
 import { Searchbar } from "./searchbar";
 import { UserModal } from "./user-modal";
-import { ThemeSwitcher } from "../theme-switcher/theme-switcher";
+import { ThemeSwitcher } from "./theme-switcher";
 
 export function Header() {
   return (
