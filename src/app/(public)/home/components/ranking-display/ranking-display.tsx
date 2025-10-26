@@ -1,16 +1,11 @@
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
+import { Story } from "@/types/stories";
 import { ExpandIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 type RankingDisplayProps = {
-  stories: {
-    id: number;
-    title: string;
-    mainGenre: string;
-    rating: string;
-    coverImage: string;
-  }[];
-
+  stories: Story[];
   title: string;
   query: string;
 };
@@ -25,7 +20,7 @@ export function RankingDisplay({ stories, query, title }: RankingDisplayProps) {
   ];
 
   return (
-    <div className="sx:max-w-[432px] max-w-[calc(100vw-32px)] w-full">
+    <div className="sx:min-w-[426px] max-w-[calc(100vw-32px)] w-full">
       <div className="flex w-full justify-between items-center">
         <h2 className="font-semibold text-cyan-950 dark:text-gray-50 py-1.5 px-3.5 bg-white dark:bg-gray-700 sx:text-xl text-lg w-full rounded-tl-sm">
           {title}
@@ -42,7 +37,7 @@ export function RankingDisplay({ stories, query, title }: RankingDisplayProps) {
           >
             <div className="sx:max-w-[80px] sx:max-h-[107px] max-w-[60px] max-h-[80px] w-full h-full rounded-[2px] overflow-hidden">
               <img
-                src={story.coverImage}
+                src={transformLinkImage(story.coverUrl)}
                 alt={`Capa da historia ${story.title}`}
               />
             </div>
@@ -65,7 +60,7 @@ export function RankingDisplay({ stories, query, title }: RankingDisplayProps) {
                 <span className="flex items-center gap-1">
                   <StarIcon className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {story.rating}
+                    {story.ratingAvg || 5}
                   </p>
                 </span>
               </div>

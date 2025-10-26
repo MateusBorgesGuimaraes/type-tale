@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "localhost:4000",
+        hostname: "localhost",
         port: "4000",
       },
     ],

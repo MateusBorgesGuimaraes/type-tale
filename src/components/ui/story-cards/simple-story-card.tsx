@@ -1,23 +1,24 @@
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
 import Link from "next/link";
 
 type SimpleStoryCardProps = {
-  id: number;
-  coverImage: string;
+  id: string;
+  coverUrl: string;
   title: string;
-  genre: string;
+  mainGenre: string;
 };
 
 export function SimpleStoryCard({
-  genre,
+  mainGenre,
   id,
-  coverImage,
+  coverUrl,
   title,
 }: SimpleStoryCardProps) {
   return (
     <Link href={"/"} className="flex flex-col items-center group">
       <div className="relative max-w-[84px] max-h-[113px] w-full h-full rounded-sm overflow-hidden">
         <img
-          src={coverImage}
+          src={transformLinkImage(coverUrl)}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
@@ -29,7 +30,7 @@ export function SimpleStoryCard({
       </div>
 
       <span className="dark:text-gray-300 text-gray-400 text-xs mt-1">
-        {genre}
+        {mainGenre}
       </span>
     </Link>
   );

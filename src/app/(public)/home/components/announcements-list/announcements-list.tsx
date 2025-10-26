@@ -1,12 +1,13 @@
+import { cutText } from "@/lib/utils/cut-text";
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
 import Link from "next/link";
 
 type AnnoucementsListProps = {
   annoucements: {
-    id: number;
-    alt: string;
+    id: string;
     title: string;
     content: string;
-    imageUrl: string;
+    image: string;
   }[];
 };
 
@@ -25,13 +26,13 @@ export function AnnoucementsList({ annoucements }: AnnoucementsListProps) {
               </h3>
             </Link>
             <p className="text-gray-600 dark:text-gray-400 text-base font-normal">
-              {annoucement.content}
+              {cutText(annoucement.content, 80)}
             </p>
           </div>
           <div className="max-w-[151px] max-h-[87px] w-full h-full rounded-sm overflow-hidden sx:block hidden">
             <img
-              src={annoucement.imageUrl}
-              alt={annoucement.alt}
+              src={transformLinkImage(annoucement.image)}
+              alt={annoucement.title}
               style={{ height: "auto" }}
               className="rounded-sm object-cover"
             />

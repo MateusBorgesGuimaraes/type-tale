@@ -1,14 +1,9 @@
 import { Title } from "@/components/ui/title/title";
 import { RankingDisplay } from "../ranking-display/ranking-display";
+import { StoriesRanks } from "@/types/stories";
 
 type RankingDisplayProps = {
-  stories: {
-    id: number;
-    title: string;
-    mainGenre: string;
-    rating: string;
-    coverImage: string;
-  }[];
+  stories: StoriesRanks;
   ariaLabel: string;
   title: string;
   queries: {
@@ -36,7 +31,7 @@ export function RankingSection({
         <div className="mt-6 flex gap-4 justify-between px-2 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 snap-x snap-mandatory">
           <div className="flex-shrink-0 snap-start">
             <RankingDisplay
-              stories={stories}
+              stories={stories.topViewed}
               title="Most Viewed"
               query={queries.maisVistas}
             />
@@ -44,7 +39,7 @@ export function RankingSection({
 
           <div className="flex-shrink-0 snap-start">
             <RankingDisplay
-              stories={stories}
+              stories={stories.topOngoing}
               title="Best Ongoing"
               query={queries.melhorAndamento}
             />
@@ -52,7 +47,7 @@ export function RankingSection({
 
           <div className="flex-shrink-0 snap-start">
             <RankingDisplay
-              stories={stories}
+              stories={stories.topCompleted}
               title="Best completed"
               query={queries.melhorCompleta}
             />

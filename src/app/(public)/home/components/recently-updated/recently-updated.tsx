@@ -1,77 +1,50 @@
 import { Column, CustomTable } from "@/components/ui/custom-table/table";
+import { subtractDate } from "@/lib/utils/subtract-date";
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
+import { RecentlyUpdatedStory } from "@/types/stories";
 import Image from "next/image";
 
 import Link from "next/link";
 
-export function RecentlyUpdated() {
-  const updates = [
-    {
-      story: "A Lenda do Guardião",
-      cover: "/mock-cover-1.jpg",
-      chapter: "Capítulo 12",
-      storyId: "hknuhbuhbh340yh2yn=y0",
-      chatperId: "giyb04bh00ihhmgfhhnj",
-      author: "Mateus Borges",
-      time: "2 minutes ago",
-    },
-    {
-      story: "Sombras do Amanhã",
-      cover: "/mock-cover-2.jpg",
-      chapter: "Capítulo 8",
-      storyId: "hknuhbuhbh340yh2yn=y0",
-      chatperId: "giyb04bh00ihhmgfhhnj",
-      author: "Clara Nunes",
-      time: "1 hour ago",
-    },
-    {
-      story: "Sombras do Amanhã",
-      cover: "/mock-cover-3.jpg",
-      chapter: "Capítulo 8",
-      storyId: "hknuhbuhbh340yh2yn=y0",
-      chatperId: "giyb04bh00ihhmgfhhnj",
-      author: "Clara Nunes",
-      time: "2 hours ago",
-    },
-    {
-      story: "A Lenda do Guardião",
-      cover: "/mock-cover-1.jpg",
-      chapter: "Capítulo 12",
-      storyId: "hknuhbuhbh340yh2yn=y0",
-      chatperId: "giyb04bh00ihhmgfhhnj",
-      author: "Mateus Borges",
-      time: "2 minutes ago",
-    },
-    {
-      story: "Sombras do Amanhã",
-      cover: "/mock-cover-2.jpg",
-      chapter: "Capítulo 8",
-      storyId: "hknuhbuhbh340yh2yn=y0",
-      chatperId: "giyb04bh00ihhmgfhhnj",
-      author: "Clara Nunes",
-      time: "1 hour ago",
-    },
-    {
-      story: "Sombras do Amanhã",
-      cover: "/mock-cover-3.jpg",
-      chapter: "Capítulo 8",
-      storyId: "hknuhbuhbh340yh2yn=y0",
-      chatperId: "giyb04bh00ihhmgfhhnj",
-      author: "Clara Nunes",
-      time: "2 hours ago",
-    },
-  ];
+type RecentlyUpdatedTable = {
+  storyTitle: string;
+  cover: string;
+  chapterTitle: string;
+  visualPosition: number;
+  storyId: string;
+  chapterId: string;
+  author: string;
+  time: Date;
+};
 
-  const columns: Column<(typeof updates)[number]>[] = [
+type RecentlyUpdatedProps = {
+  data: RecentlyUpdatedStory[];
+};
+
+export function RecentlyUpdated({ data }: RecentlyUpdatedProps) {
+  const transformed: RecentlyUpdatedTable[] = data.map((item) => ({
+    storyTitle: item.title,
+    cover: item.coverUrl,
+    chapterTitle: item.lastChapter.title,
+    visualPosition: item.lastChapter.visualPosition,
+    storyId: item.id,
+    chapterId: item.lastChapter.id,
+    author: item.author.username,
+    time: item.updatedAt,
+  }));
+
+  const columns: Column<(typeof transformed)[number]>[] = [
     {
-      key: "story",
+      key: "storyTitle",
       label: "Story",
-      render: (_: string, item: (typeof updates)[number]) => (
+      render: (_: unknown, item: (typeof transformed)[number]) => (
         <div className="flex items-center gap-3">
           <div className="relative w-10 h-14 rounded-sm overflow-hidden flex-shrink-0">
             <Image
-              src={item.cover}
-              alt={item.story}
+              src={transformLinkImage(item.cover)}
+              alt={item.storyTitle}
               fill
+              sizes="auto"
               className="object-cover"
             />
           </div>
@@ -79,26 +52,33 @@ export function RecentlyUpdated() {
             href={item.storyId}
             className="font-medium text-gray-900 dark:text-gray-100 hover:text-cyan-400 dark:hover:text-cyan-300 transition"
           >
-            {item.story}
+            {item.storyTitle}
           </Link>
         </div>
       ),
     },
     {
-      key: "chapter",
+      key: "chapterTitle",
       label: "Chapter",
-      render: (_: string, item: (typeof updates)[number]) => (
+      render: (_: unknown, item: (typeof transformed)[number]) => (
         <Link
           className="font-medium text-gray-900 dark:text-gray-100 hover:text-cyan-400 dark:hover:text-cyan-300 transition"
-          href={item.chatperId}
+          href={item.chapterId}
         >
-          {item.chapter}
+          {item.chapterTitle}
         </Link>
       ),
     },
     { key: "author", label: "Author" },
-    { key: "time", label: "Time" },
+    { key: "visualPosition", label: "LAST CHAPTER" },
+    {
+      key: "time",
+      label: "Time",
+      render: (_: unknown, item: (typeof transformed)[number]) => (
+        <p>{subtractDate(item.time)}</p>
+      ),
+    },
   ];
 
-  return <CustomTable columns={columns} data={updates} />;
+  return <CustomTable columns={columns} data={transformed} />;
 }
