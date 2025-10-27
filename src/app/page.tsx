@@ -15,11 +15,11 @@ import { RandomChoicesSkeleton } from "@/components/ui/skeletons/random-choices-
 import { RecentlyUpdatedSkeleton } from "@/components/ui/skeletons/recently-updated-skeleton";
 
 export const metadata: Metadata = {
-  title: "Type Tale - Fanfics e Histórias Originais",
-  description: "Descubra as melhores fanfics e histórias originais...",
+  title: "Type Tale - Fanfics and Original Stories",
+  description: "Discover the best fanfics and original stories...",
   openGraph: {
-    title: "Type Tale - Fanfics e Histórias Originais",
-    description: "Descubra as melhores fanfics e histórias originais",
+    title: "Type Tale - Fanfics and Original Stories",
+    description: "Discover the best fanfics and original stories",
     type: "website",
   },
 };

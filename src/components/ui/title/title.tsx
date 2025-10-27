@@ -10,7 +10,7 @@ export function Title({ children, variant = "main" }: TitleProps) {
 
   return (
     <h1
-      className={`text-2xl font-semibold text-cyan-950 dark:text-cyan-400 ${variants[variant]}`}
+      className={`sm:text-2xl text-xl font-semibold text-cyan-950 dark:text-cyan-400 ${variants[variant]}`}
     >
       {children}
     </h1>

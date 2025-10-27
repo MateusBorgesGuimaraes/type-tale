@@ -30,7 +30,7 @@ export function Footer() {
           </Link>
           {footerItems.map((items, index) => (
             <div key={index} className="flex flex-col">
-              <h4 className="mb-3 text-cyan-950 dark:text-cyan-400 font-semibold text-xl">
+              <h4 className="mb-3 text-cyan-950 dark:text-cyan-400 font-semibold sm:text-xl text-base">
                 {items.title}
               </h4>
               <div className="flex flex-col gap-2">
@@ -47,7 +47,7 @@ export function Footer() {
             </div>
           ))}
           <div className="flex flex-col items-center">
-            <h4 className="mb-3 text-cyan-950 dark:text-cyan-400 font-semibold text-xl">
+            <h4 className="mb-3 text-cyan-950 dark:text-cyan-400 font-semibold sm:text-xl text-base">
               SOCIAL MEDIA
             </h4>
             <div className="flex gap-6">
