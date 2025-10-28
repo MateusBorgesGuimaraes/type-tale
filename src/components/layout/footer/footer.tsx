@@ -20,7 +20,7 @@ export function Footer() {
   return (
     <footer className="full-bleed bg-white dark:bg-gray-900">
       <div className="wrapper">
-        <div className="flex py-8 border-b border-gray-200 gap-6 justify-between flex-wrap">
+        <div className="flex py-8 border-b border-gray-200 dark:border-gray-700 gap-6 justify-between flex-wrap">
           <Link href={"/"}>
             <img
               src={"/icon-black.svg"}

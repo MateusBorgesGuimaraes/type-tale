@@ -1,11 +1,23 @@
 import { Author, SimpleAuthor } from "./author";
 
+export enum StoryStatus {
+  ONGOING = "ONGOING",
+  HIATUS = "HIATUS",
+  DROPPED = "DROPPED",
+  COMPLETED = "COMPLETED",
+}
+
 export type Story = {
   id: string;
   title: string;
   slug: string;
   coverUrl: string;
   synopsis: string;
+  chaptersCount: number;
+  publishedChaptersCount: number;
+  viewsCount: number;
+  followersCount: number;
+  status: StoryStatus;
   storyType: string;
   mainGenre: string;
   tags: string[];
@@ -13,6 +25,26 @@ export type Story = {
   ratingCount: number;
   createdAt: Date;
   author: Author;
+};
+
+export type StoryCleanner = Pick<
+  Story,
+  "id" | "title" | "slug" | "coverUrl" | "createdAt" | "author"
+>;
+
+export type StoryInfos = {
+  id: string;
+  slug: string;
+  title: string;
+  coverUrl: string;
+  status: StoryStatus;
+  mainGenre: string;
+  tags: string[];
+  publishedChaptersCount: number;
+  viewsCount: number;
+  followersCount: number;
+  ratingAvg: number | null;
+  ratingCount: number;
 };
 
 export type StoriesRanks = {

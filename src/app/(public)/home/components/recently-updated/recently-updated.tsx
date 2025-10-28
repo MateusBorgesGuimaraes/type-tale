@@ -9,6 +9,7 @@ import Link from "next/link";
 type RecentlyUpdatedTable = {
   storyTitle: string;
   cover: string;
+  slug: string;
   chapterTitle: string;
   visualPosition: number;
   storyId: string;
@@ -24,6 +25,7 @@ type RecentlyUpdatedProps = {
 export function RecentlyUpdated({ data }: RecentlyUpdatedProps) {
   const transformed: RecentlyUpdatedTable[] = data.map((item) => ({
     storyTitle: item.title,
+    slug: item.slug,
     cover: item.coverUrl,
     chapterTitle: item.lastChapter.title,
     visualPosition: item.lastChapter.visualPosition,
@@ -49,7 +51,7 @@ export function RecentlyUpdated({ data }: RecentlyUpdatedProps) {
             />
           </div>
           <Link
-            href={item.storyId}
+            href={`/story/${item.slug}`}
             className="font-medium text-gray-900 dark:text-gray-100 hover:text-cyan-400 dark:hover:text-cyan-300 transition"
           >
             {item.storyTitle}

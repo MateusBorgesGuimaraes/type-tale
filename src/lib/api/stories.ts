@@ -32,3 +32,12 @@ export async function getRecentlyUpdatedtSories(limit = 6) {
     },
   );
 }
+
+export async function getStoryBySlugOrId(param: string) {
+  return apiFetch<Story>(`/stories/${param}`, {
+    next: {
+      revalidate: isDev ? 0 : 1800,
+      tags: [`story-${param}`],
+    },
+  });
+}

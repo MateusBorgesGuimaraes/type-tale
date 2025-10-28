@@ -17,7 +17,7 @@ export default function NavStory({ slug }: NavStoryProps) {
 
   return (
     <div className="full-bleed bg-gray-100 dark:bg-gray-800 mt-6 pb-8 pt-8">
-      <nav className="wrapper border-b border-gray-300 flex gap-12">
+      <nav className="wrapper border-b border-gray-300 dark:border-gray-700 flex gap-12">
         {links.map(({ href, label }) => {
           const isActive = pathname === href;
 
@@ -29,7 +29,7 @@ export default function NavStory({ slug }: NavStoryProps) {
                 pb-2 border-b-4 text-2xl font-semibold transition-colors
                 ${
                   isActive
-                    ? "border-cyan-800 text-gray-600 dark:text-blue-400"
+                    ? "border-cyan-800 text-gray-600 dark:text-cyan-400 dark:border-cyan-600"
                     : "border-transparent text-gray-400 dark:text-gray-300 hover:border-gray-200"
                 }
               `}

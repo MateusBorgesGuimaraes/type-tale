@@ -16,11 +16,11 @@ export default function Breadcrumb({ data }: BreadcrumbProps) {
   const pathname = usePathname();
 
   return (
-    <ul className="flex sm:gap-1 gap-0 items-center  font-medium md:text-xl sm:text-base text-xs transition">
+    <ul className="flex sm:gap-1 gap-0 items-center font-medium md:text-xl sm:text-base text-xs transition">
       {data.map((obj, index) => (
         <div className="flex items-center gap-1" key={obj.name}>
           <li
-            className={`${pathname === obj.slug ? "text-cyan-700 dark:text-cyan-400" : "text-gray-900  dark:text-gray-50 hover:text-cyan-700 dark:hover:text-cyan-400 "}`}
+            className={`${pathname === `/story/${obj.slug}` ? "text-cyan-700 dark:text-cyan-400" : "text-gray-900  dark:text-gray-50 hover:text-cyan-700 dark:hover:text-cyan-400 capitalize"}`}
           >
             <Link href={obj.link}>{obj.name}</Link>
           </li>
