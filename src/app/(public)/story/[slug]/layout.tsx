@@ -1,7 +1,11 @@
 import Breadcrumb from "@/components/ui/breadcrumb/breadcrumb";
 import StoryLayoutHeader from "./components/story-layout-header/story-layout-header";
 import NavStory from "./components/nav-story/nav-story";
-import { getStoryBySlugOrId } from "@/lib/api/stories";
+import {
+  getStoryBySlugOrId,
+  getStoriesRecommendationsById,
+} from "@/lib/api/stories";
+import { StoryProvider } from "./story-context";
 
 export default async function StoryLayout({
   children,
@@ -14,7 +18,8 @@ export default async function StoryLayout({
 
   const { data } = await getStoryBySlugOrId(slug);
 
-  // console.log("data", data);
+  const { data: storiesRecommendationsData } =
+    await getStoriesRecommendationsById(data.id);
 
   const bradcrumbsData = [
     { link: "/", name: "Home", slug: "home" },
@@ -25,15 +30,18 @@ export default async function StoryLayout({
       slug: data.slug,
     },
   ];
-  return (
-    <div>
-      <div className="md:pt-8 md:pb-12 pt-6 pb-8">
-        <Breadcrumb data={bradcrumbsData} />
-      </div>
 
-      <StoryLayoutHeader data={data} />
-      <NavStory slug={slug} />
-      <section>{children}</section>
-    </div>
+  return (
+    <StoryProvider value={{ data, storiesRecommendationsData }}>
+      <div>
+        <div className="md:pt-8 md:pb-12 pt-6 pb-8">
+          <Breadcrumb data={bradcrumbsData} />
+        </div>
+
+        <StoryLayoutHeader data={data} />
+        <NavStory slug={slug} />
+        <section>{children}</section>
+      </div>
+    </StoryProvider>
   );
 }

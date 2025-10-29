@@ -49,7 +49,7 @@ export function RankingDisplay({ stories, query, title }: RankingDisplayProps) {
               </span>
               <div className="flex flex-col  gap-1">
                 <Link
-                  href={"/"}
+                  href={`/story/${story.slug}`}
                   className="text-gray-900 dark:text-gray-50 hover:text-cyan-500 dark:hover:text-cyan-400 transition sx:text-base text-sm"
                 >
                   {story.title}

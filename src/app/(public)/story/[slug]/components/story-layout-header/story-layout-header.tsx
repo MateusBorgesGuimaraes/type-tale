@@ -8,7 +8,6 @@ import {
   CirclePlayIcon,
   CirclePlusIcon,
   EyeIcon,
-  PlusIcon,
   TableOfContentsIcon,
 } from "lucide-react";
 import LinkButtonCustom from "@/components/ui/link-buttons/link-button-custom";
@@ -58,7 +57,16 @@ export default async function StoryLayoutHeader({
             }
           />
         </div>
-        <ShowRatingStars maxWidth={180} avgRating={4.8} reviewCount={235} />
+
+        {data.ratingCount > 0 ? (
+          <ShowRatingStars
+            maxWidth={180}
+            avgRating={data?.ratingAvg || 0}
+            reviewCount={data.ratingCount}
+          />
+        ) : (
+          <p>No reviews for the story yet, be the first!!</p>
+        )}
 
         <div className="flex  sm:gap-6 gap-4 flex-wrap md:mt-12 sm:justify-normal justify-center">
           <LinkButtonCustom className="bg-cyan-600" link="/">

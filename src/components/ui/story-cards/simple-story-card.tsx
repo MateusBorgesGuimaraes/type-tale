@@ -3,6 +3,7 @@ import Link from "next/link";
 
 type SimpleStoryCardProps = {
   id: string;
+  slug: string;
   coverUrl: string;
   title: string;
   mainGenre: string;
@@ -13,9 +14,10 @@ export function SimpleStoryCard({
   id,
   coverUrl,
   title,
+  slug,
 }: SimpleStoryCardProps) {
   return (
-    <Link href={"/"} className="flex flex-col items-center group">
+    <Link href={`/story/${slug}`} className="flex flex-col items-center group">
       <div className="relative max-w-[84px] max-h-[113px] w-full h-full rounded-sm overflow-hidden">
         <img
           src={transformLinkImage(coverUrl)}

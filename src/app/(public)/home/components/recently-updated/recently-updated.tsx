@@ -12,6 +12,7 @@ type RecentlyUpdatedTable = {
   slug: string;
   chapterTitle: string;
   visualPosition: number;
+  publishedChaptersCount: number;
   storyId: string;
   chapterId: string;
   author: string;
@@ -27,6 +28,7 @@ export function RecentlyUpdated({ data }: RecentlyUpdatedProps) {
     storyTitle: item.title,
     slug: item.slug,
     cover: item.coverUrl,
+    publishedChaptersCount: item.publishedChaptersCount,
     chapterTitle: item.lastChapter.title,
     visualPosition: item.lastChapter.visualPosition,
     storyId: item.id,
@@ -72,7 +74,7 @@ export function RecentlyUpdated({ data }: RecentlyUpdatedProps) {
       ),
     },
     { key: "author", label: "Author" },
-    { key: "visualPosition", label: "LAST CHAPTER" },
+    { key: "publishedChaptersCount", label: "LAST CHAPTER" },
     {
       key: "time",
       label: "Time",

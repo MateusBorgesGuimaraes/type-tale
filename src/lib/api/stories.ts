@@ -1,4 +1,9 @@
-import { RecentlyUpdatedStory, StoriesRanks, Story } from "@/types/stories";
+import {
+  RecentlyUpdatedStory,
+  StoriesRanks,
+  Story,
+  StoryRecommendation,
+} from "@/types/stories";
 import { apiFetch } from "./client";
 
 const isDev = process.env.NODE_ENV === "development";
@@ -38,6 +43,15 @@ export async function getStoryBySlugOrId(param: string) {
     next: {
       revalidate: isDev ? 0 : 1800,
       tags: [`story-${param}`],
+    },
+  });
+}
+
+export async function getStoriesRecommendationsById(id: string) {
+  return apiFetch<StoryRecommendation[]>(`/stories/${id}/recommendations`, {
+    next: {
+      revalidate: isDev ? 0 : 1800,
+      tags: [`stories-recommendations-[${id}]`],
     },
   });
 }

@@ -29,7 +29,12 @@ export type Story = {
 
 export type StoryCleanner = Pick<
   Story,
-  "id" | "title" | "slug" | "coverUrl" | "createdAt" | "author"
+  "id" | "title" | "slug" | "chaptersCount"
+>;
+
+export type StoryRecommendation = Pick<
+  Story,
+  "id" | "title" | "slug" | "coverUrl" | "ratingAvg"
 >;
 
 export type StoryInfos = {
@@ -60,6 +65,7 @@ export type RecentlyUpdatedStory = {
   coverUrl: string;
   updatedAt: Date;
   author: SimpleAuthor;
+  publishedChaptersCount: number;
   lastChapter: {
     id: string;
     title: string;

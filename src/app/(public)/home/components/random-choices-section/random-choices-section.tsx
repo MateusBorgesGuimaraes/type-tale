@@ -10,10 +10,11 @@ export async function RandomChoicesSection() {
         <Title>Random Choices</Title>
       </div>
       <ul className="flex mt-6 lg:gap-7 gap-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 snap-x snap-mandatory">
-        {ramdomStoriesData.map(({ id, mainGenre, coverUrl, title }) => (
+        {ramdomStoriesData.map(({ id, mainGenre, coverUrl, title, slug }) => (
           <li className="flex-shrink-0 snap-start" key={id}>
             <SimpleStoryCard
               mainGenre={mainGenre}
+              slug={slug}
               id={id}
               coverUrl={coverUrl}
               title={title}
