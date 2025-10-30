@@ -1,7 +1,7 @@
 "use client";
 
 import { Story, StoryRecommendation } from "@/types/stories";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 type StoryContextType = {
   data: Story;
@@ -17,8 +17,11 @@ export function StoryProvider({
   value: StoryContextType;
   children: React.ReactNode;
 }) {
+  const memoizedValue = useMemo(() => value, [value.data.id]);
   return (
-    <StoryContext.Provider value={value}>{children}</StoryContext.Provider>
+    <StoryContext.Provider value={memoizedValue}>
+      {children}
+    </StoryContext.Provider>
   );
 }
 

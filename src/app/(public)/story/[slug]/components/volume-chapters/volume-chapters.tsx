@@ -25,7 +25,7 @@ export function VolumeChapters({
           const isColoredRow = Math.floor(index / 2) % 2 === 1;
           return (
             <li
-              key={index}
+              key={chapter.id}
               className={`
                   md:w-[49%] w-full border-b border-gray-200 dark:border-gray-700 p-3 flex flex-col gap-1
                   ${index % 2 === 0 ? "bg-gray-200/20 dark:bg-gray-700/20" : "bg-transparent dark:bg-transparent"}

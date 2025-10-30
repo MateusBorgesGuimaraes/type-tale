@@ -1,8 +1,9 @@
 import { BookMarkedIcon, CompassIcon } from "lucide-react";
 import Link from "next/link";
-import { Searchbar } from "./searchbar";
+
 import { UserModal } from "./user-modal";
 import { ThemeSwitcher } from "./theme-switcher";
+import SearchBar from "@/components/ui/search/search-bar";
 
 export function Header() {
   return (
@@ -45,7 +46,7 @@ export function Header() {
         </div>
 
         <div className="flex items-center md:gap-20 xms:gap-6 gap-2 relative">
-          <Searchbar />
+          <SearchBar />
 
           <div className="flex items-center xms:gap-4 gap-2">
             <ThemeSwitcher />

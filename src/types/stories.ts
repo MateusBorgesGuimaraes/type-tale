@@ -73,3 +73,24 @@ export type RecentlyUpdatedStory = {
     visualPosition: number;
   };
 };
+
+export type StorySearchResult = Pick<
+  Story,
+  | "id"
+  | "title"
+  | "slug"
+  | "coverUrl"
+  | "synopsis"
+  | "mainGenre"
+  | "status"
+  | "tags"
+  | "ratingAvg"
+>;
+
+export interface StorySearchParams {
+  page?: number;
+  limit?: number;
+  title?: string;
+  genre?: string;
+  status?: "ONGOING" | "COMPLETED" | "HIATUS" | "CANCELLED";
+}

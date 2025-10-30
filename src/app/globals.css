@@ -37,6 +37,21 @@
   }
 }
 
+@keyframes fadeInSearch {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn-search {
+  animation: fadeInSearch 0.15s ease-out;
+}
+
 .animate-marquee {
   animation: marquee 60s linear infinite;
 }

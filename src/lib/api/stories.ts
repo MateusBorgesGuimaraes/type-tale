@@ -3,8 +3,11 @@ import {
   StoriesRanks,
   Story,
   StoryRecommendation,
+  StorySearchParams,
+  StorySearchResult,
 } from "@/types/stories";
 import { apiFetch } from "./client";
+import { buildQueryString } from "../utils/build-query-string";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -47,11 +50,22 @@ export async function getStoryBySlugOrId(param: string) {
   });
 }
 
-export async function getStoriesRecommendationsById(id: string) {
-  return apiFetch<StoryRecommendation[]>(`/stories/${id}/recommendations`, {
+export async function getStoriesRecommendationsByIdOrSlug(param: string) {
+  return apiFetch<StoryRecommendation[]>(`/stories/${param}/recommendations`, {
     next: {
       revalidate: isDev ? 0 : 1800,
-      tags: [`stories-recommendations-[${id}]`],
+      tags: [`stories-recommendations-[${param}]`],
+    },
+  });
+}
+
+export async function getStories(params: StorySearchParams = {}) {
+  const queryString = buildQueryString(params);
+
+  return apiFetch<StorySearchResult[]>(`/stories${queryString}`, {
+    next: {
+      revalidate: isDev ? 0 : 300,
+      tags: ["stories-list"],
     },
   });
 }

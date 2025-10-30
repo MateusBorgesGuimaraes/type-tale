@@ -3,9 +3,28 @@ import StoryLayoutHeader from "./components/story-layout-header/story-layout-hea
 import NavStory from "./components/nav-story/nav-story";
 import {
   getStoryBySlugOrId,
-  getStoriesRecommendationsById,
+  getStoriesRecommendationsByIdOrSlug,
 } from "@/lib/api/stories";
 import { StoryProvider } from "./story-context";
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const { data } = await getStoryBySlugOrId(slug);
+
+  return {
+    title: data.title,
+    description: data.synopsis,
+    openGraph: {
+      images: [transformLinkImage(data.coverUrl)],
+    },
+  };
+}
 
 export default async function StoryLayout({
   children,
@@ -16,12 +35,12 @@ export default async function StoryLayout({
 }) {
   const { slug } = await params;
 
-  const { data } = await getStoryBySlugOrId(slug);
+  const [{ data }, { data: storiesRecommendationsData }] = await Promise.all([
+    getStoryBySlugOrId(slug),
+    getStoriesRecommendationsByIdOrSlug(slug),
+  ]);
 
-  const { data: storiesRecommendationsData } =
-    await getStoriesRecommendationsById(data.id);
-
-  const bradcrumbsData = [
+  const breadcrumbsData = [
     { link: "/", name: "Home", slug: "home" },
     { link: "/", name: data.mainGenre, slug: data.mainGenre },
     {
@@ -35,10 +54,11 @@ export default async function StoryLayout({
     <StoryProvider value={{ data, storiesRecommendationsData }}>
       <div>
         <div className="md:pt-8 md:pb-12 pt-6 pb-8">
-          <Breadcrumb data={bradcrumbsData} />
+          <Breadcrumb data={breadcrumbsData} />
         </div>
 
         <StoryLayoutHeader data={data} />
+
         <NavStory slug={slug} />
         <section>{children}</section>
       </div>

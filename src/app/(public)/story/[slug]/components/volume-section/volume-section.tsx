@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ChapterHeader from "../chapters-header/chapters-header";
 import { VolumeChapters } from "../volume-chapters/volume-chapters";
 import { StoryChapters } from "@/types/chapter";
@@ -12,12 +12,11 @@ type VolumeSectionProps = {
 export default function VolumeSection({ volumns }: VolumeSectionProps) {
   const [listOrderStart, setListOrderStart] = useState(true);
 
-  const lastChapter =
-    volumns.story.chaptersCount > 0
-      ? volumns.volumes[volumns.volumes.length - 1].chapters[
-          volumns.volumes[volumns.volumes.length - 1].chapters.length - 1
-        ]
-      : "No chapter";
+  const lastChapter = useMemo(() => {
+    if (volumns.story.chaptersCount === 0) return "No chapter";
+    const lastVolume = volumns.volumes[volumns.volumes.length - 1];
+    return lastVolume.chapters[lastVolume.chapters.length - 1];
+  }, [volumns]);
 
   return (
     <>
