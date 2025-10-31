@@ -41,12 +41,12 @@ export default async function StoryLayout({
   ]);
 
   const breadcrumbsData = [
-    { link: "/", name: "Home", slug: "home" },
-    { link: "/", name: data.mainGenre, slug: data.mainGenre },
+    { name: "Home", link: "/" },
+    { name: data.mainGenre },
     {
-      link: `/story/${data.slug}`,
       name: data.title,
-      slug: data.slug,
+      link: `/story/${data.slug}`,
+      param: data.slug,
     },
   ];
 

@@ -9,3 +9,12 @@ export async function getAnnoucementsAndAuthors() {
     },
   });
 }
+
+export async function getAnnoucementById(id: string) {
+  return apiFetch<AnnoucementWithAuthor>(`/announcements/${id}`, {
+    next: {
+      revalidate: 1800,
+      tags: [`annoucement-${id}`],
+    },
+  });
+}
