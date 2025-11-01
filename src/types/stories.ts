@@ -1,4 +1,4 @@
-import { Author, SimpleAuthor } from "./author";
+import { Author, SimpleAuthor } from "./user";
 
 export enum StoryStatus {
   ONGOING = "ONGOING",

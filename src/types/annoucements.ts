@@ -1,4 +1,4 @@
-import { SimpleAuthor } from "./author";
+import { SimpleAuthor } from "./user";
 
 export type AnnoucementWithAuthor = {
   id: string;

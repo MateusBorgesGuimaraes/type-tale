@@ -28,7 +28,7 @@ export function useSearch() {
       setResults(data || []);
       setHasSearched(true);
     } catch (error) {
-      console.error("Erro ao buscar histórias:", error);
+      console.error("Error searching for stories:", error);
       setResults([]);
       setHasSearched(true);
     } finally {

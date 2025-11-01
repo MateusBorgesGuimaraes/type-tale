@@ -1,6 +1,7 @@
 import { subtractDate } from "@/lib/utils/subtract-date";
-import { VolumeWithChapters } from "@/types/volume";
+
 import Link from "next/link";
+import { VolumeWithChapters } from "../../../../../../../volume";
 
 type VolumeSectionProps = {
   startTop: boolean;

@@ -14,13 +14,14 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MenuItem } from "./menu-item";
 import { ModalActionButton } from "./modal-action-button";
+import { useAuth } from "@/hooks/use-auth";
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
 
 export function UserModal() {
+  const { user, isAuthenticated } = useAuth();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const logged = true;
 
   const menuItemsLogout = [
     { href: "/browse", icon: CompassIcon, label: "Browse" },
@@ -34,7 +35,7 @@ export function UserModal() {
     { href: "/my-stories", icon: NotebookPenIcon, label: "My Stories" },
   ];
 
-  const activeIcons = logged ? menuItemsLogedIn : menuItemsLogout;
+  const activeIcons = isAuthenticated ? menuItemsLogedIn : menuItemsLogout;
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -85,19 +86,23 @@ export function UserModal() {
           id="user-modal"
           className="absolute xms:w-3xs w-[200px] bg-white dark:bg-gray-800 shadow-sm rounded-sm top-[40px] right-0 z-10 overflow-hidden"
         >
-          {logged ? (
+          {isAuthenticated ? (
             <div className="flex items-center gap-3 xsm:p-4 p-3  bg-gray-400 dark:bg-gray-700 rounded-tr-sm rounded-tl-sm">
               <div>
                 <Image
                   className="rounded-full xms:h-10 xms:w-10 h-9 w-9"
-                  src={"/mock-user.jpg"}
+                  src={
+                    user?.avatarUrl
+                      ? transformLinkImage(user?.avatarUrl)
+                      : "/mock-user.jpg"
+                  }
                   alt="user photo"
                   width={48}
                   height={48}
                 />
               </div>
               <p className="text-gray-50 xms:text-lg text-base font-medium">
-                Maria Adelan
+                {user?.username}
               </p>
             </div>
           ) : (
@@ -120,10 +125,10 @@ export function UserModal() {
               />
             ))}
           </ul>
-          {logged ? (
-            <ModalActionButton icon={LogOutIcon} label="Logout" />
+          {isAuthenticated ? (
+            <ModalActionButton link="/" icon={LogOutIcon} label="Logout" />
           ) : (
-            <ModalActionButton icon={LogInIcon} label="Login" />
+            <ModalActionButton link="/login" icon={LogInIcon} label="Login" />
           )}
         </div>
       )}

@@ -8,6 +8,8 @@
   --breakpoint-sx: 30rem; /* 480px */
 }
 
+@import "tailwindcss";
+
 @keyframes fadeIn {
   from {
     opacity: 0;
