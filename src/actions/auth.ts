@@ -3,9 +3,9 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { login as apiLogin } from "../lib/api/auth";
-import { LoginFormData } from "@/schemas/auth";
+import { LoginFormData, RegisterFormData } from "@/schemas/auth";
 import { User } from "@/types/user";
-import { getUserProfile } from "@/lib/api/user";
+import { getUserProfile, register as apiRegister } from "@/lib/api/user";
 
 type LoginSuccessResponse = {
   success: true;
@@ -61,6 +61,64 @@ export async function loginAction(
       errorMsg = "Incorrect email or password.";
     } else if (error?.statusCode === 429) {
       errorMsg = "Too many attempts. Try again later.";
+    } else if (error?.message) {
+      errorMsg = Array.isArray(error.message)
+        ? error.message.join(", ")
+        : error.message;
+    }
+
+    return {
+      success: false,
+      error: errorMsg,
+    };
+  }
+}
+
+type RegisterSuccessResponse = {
+  success: true;
+  data: {
+    accessToken: string;
+    user: User | null;
+  };
+};
+
+type RegisterErrorResponse = {
+  success: false;
+  error: string;
+};
+
+export async function registerAction(
+  data: RegisterFormData,
+): Promise<RegisterSuccessResponse | RegisterErrorResponse> {
+  try {
+    const response = await apiRegister(data);
+
+    if (response.statusCode === 201) {
+      const loginResult = await loginAction({
+        email: data.email,
+        password: data.password,
+      });
+
+      return loginResult;
+    }
+
+    return {
+      success: false,
+      error: "Unexpected error while creating account.a",
+    };
+  } catch (error: any) {
+    let errorMsg = "Error creating account";
+
+    if (error?.statusCode === 409) {
+      errorMsg = "Email already registered";
+    } else if (error?.statusCode === 429) {
+      errorMsg = "Too many attempts. Try again later.";
+    } else if (error?.statusCode === 400) {
+      errorMsg = error?.message
+        ? Array.isArray(error.message)
+          ? error.message.join(", ")
+          : error.message
+        : "Invalid data";
     } else if (error?.message) {
       errorMsg = Array.isArray(error.message)
         ? error.message.join(", ")

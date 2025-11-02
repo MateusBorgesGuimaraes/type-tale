@@ -6,8 +6,18 @@ import CustomInput from "../custom-input/custom-input";
 import { useForm } from "react-hook-form";
 import { RegisterFormData, registerSchema } from "@/schemas/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { registerAction } from "@/actions/auth";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function RegisterForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
+  const { setUser } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -27,17 +37,42 @@ export default function RegisterForm() {
   const emailValue = watch("email");
   const passwordValue = watch("password");
 
-  const onSubmit = (data: RegisterFormData) => {
-    console.log("Dados do formulario de registro:", data);
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      setIsLoading(true);
+      setErrorMessage("");
+
+      const result = await registerAction(data);
+
+      if (!result.success) {
+        setErrorMessage(result.error);
+        toast.error(result.error);
+        return;
+      }
+
+      if (result.data.user) {
+        setUser(result.data.user);
+        toast.success("User created successfully.");
+      }
+
+      router.push("/dashboard");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Unexpected error while creating account.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
       <CustomInput
         {...register("email")}
+        required
+        disabled={isLoading}
         label="email"
         type="email"
-        required
         errorMessage={errors.email?.message}
         showClearButton={true}
         value={emailValue}
@@ -45,17 +80,19 @@ export default function RegisterForm() {
       />
       <CustomInput
         {...register("username")}
+        required
+        disabled={isLoading}
         label="username"
         type="text"
-        required
         errorMessage={errors.username?.message}
         showClearButton={true}
         value={usernameValue}
         onClear={() => setValue("username", "")}
       />
       <CustomInput
-        required
         {...register("password")}
+        required
+        disabled={isLoading}
         label="password"
         type="password"
         errorMessage={errors.password?.message}
@@ -64,7 +101,9 @@ export default function RegisterForm() {
         onClear={() => setValue("password", "")}
       />
       <div className="flex flex-col gap-2">
-        <ButtonForm>REGISTER</ButtonForm>
+        <ButtonForm disabled={isLoading}>
+          {isLoading ? "ENTRANDO..." : "REGISTER"}
+        </ButtonForm>
         <Link
           href={"/register"}
           className="text-sm text-gray-400 underline hover:text-blue-700 transition"

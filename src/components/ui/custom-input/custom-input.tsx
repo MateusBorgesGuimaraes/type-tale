@@ -34,7 +34,7 @@ export default function CustomInput({
     <div className="w-full flex flex-col gap-1 group">
       <label
         htmlFor={inputId}
-        className="uppercase font-medium text-sm text-gray-500 transition-colors group-focus-within:text-gray-800"
+        className="uppercase font-medium text-sm text-gray-500 dark:text-gray-200 transition-colors group-focus-within:text-gray-800 dark:group-focus-within:text-cyan-300"
       >
         {required && <span className="mr-1 text-red-500">*</span>}
         {label}
@@ -45,13 +45,17 @@ export default function CustomInput({
           type={type}
           value={controlledValue}
           className={`
-            w-full border border-gray-300 h-10 rounded-md px-3
+            w-full border border-gray-300 dark:border-cyan-500 h-10 rounded-md px-3
             ${showClearButton && hasValue ? "pr-10" : ""}
             bg-white
+            dark:text-gray-950
             outline-none transition-all duration-200 ease-in-out
             hover:border-gray-400
+            dark:hover:border-cyan-400
             focus:border-gray-600
+            dark:focus:border-cyan-600
             focus:bg-gray-50
+            dark:focus:bg-cyan-50-50
             ${errorMessage ? "border-red-500" : ""}
           `}
           {...rest}

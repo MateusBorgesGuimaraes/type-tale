@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
 import { useState } from "react";
 import { loginAction } from "@/actions/auth";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -44,25 +45,25 @@ export default function LoginForm() {
       if (!result.success) {
         const message = Array.isArray(result.error)
           ? result.error.join(", ")
-          : result.error || "Erro ao fazer login";
+          : result.error || "Error when logging in";
 
         setErrorMessage(message);
+        toast.error(message);
         return;
       }
 
       if (result.data.user) {
         setUser(result.data.user);
+        toast.success("Login successfully");
       } else {
-        console.warn(
-          "Login bem-sucedido mas perfil do usuário não foi carregado",
-        );
+        toast.success("Login successful but user profile not loaded.");
       }
 
-      router.push("/");
+      router.push("/dashboard");
       router.refresh();
-    } catch (error) {
-      console.error("Erro capturado no catch:", error);
-      setErrorMessage("Erro inesperado ao fazer login");
+    } catch (error: any) {
+      toast.error(error);
+      setErrorMessage("Unexpected error while logging in.");
     } finally {
       setIsLoading(false);
     }

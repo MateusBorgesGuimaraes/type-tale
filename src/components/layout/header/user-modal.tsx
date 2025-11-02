@@ -16,9 +16,10 @@ import { MenuItem } from "./menu-item";
 import { ModalActionButton } from "./modal-action-button";
 import { useAuth } from "@/hooks/use-auth";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
+import { logoutAction } from "@/actions/auth";
 
 export function UserModal() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, clearAuth } = useAuth();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -36,6 +37,15 @@ export function UserModal() {
   ];
 
   const activeIcons = isAuthenticated ? menuItemsLogedIn : menuItemsLogout;
+
+  async function logout() {
+    clearAuth();
+    try {
+      await logoutAction();
+    } catch (error) {
+      window.location.href = "/login";
+    }
+  }
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -74,7 +84,23 @@ export function UserModal() {
         onClick={() => setModalIsOpen(!modalIsOpen)}
         className="flex items-center gap-0.5 cursor-pointer"
       >
-        <UserRoundIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
+        {isAuthenticated ? (
+          <div>
+            <Image
+              className="rounded-full xms:w-8 xms:h-8 w-6 h-6"
+              src={
+                user?.avatarUrl
+                  ? transformLinkImage(user?.avatarUrl)
+                  : "/mock-user.jpg"
+              }
+              alt="user photo"
+              width={48}
+              height={48}
+            />
+          </div>
+        ) : (
+          <UserRoundIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
+        )}
         <ChevronDownIcon
           className={`text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5 ${modalIsOpen && "rotate-180"} transition`}
         />
@@ -126,7 +152,13 @@ export function UserModal() {
             ))}
           </ul>
           {isAuthenticated ? (
-            <ModalActionButton link="/" icon={LogOutIcon} label="Logout" />
+            <button
+              onClick={logout}
+              className="px-4 py-2.5 hover:bg-gray-300 transition bg-gray-100 flex gap-4 items-center cursor-pointer w-full"
+            >
+              <LogOutIcon className="text-gray-700 xms:w-6 xms:h-6 w-5 h-5" />{" "}
+              <p className="font-medium text-gray-700 text-base">Logout</p>
+            </button>
           ) : (
             <ModalActionButton link="/login" icon={LogInIcon} label="Login" />
           )}

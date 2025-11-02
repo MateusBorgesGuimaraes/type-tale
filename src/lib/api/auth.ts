@@ -1,6 +1,6 @@
-import { LoginFormData } from "@/schemas/auth";
+import { LoginFormData, RegisterFormData } from "@/schemas/auth";
 import { apiFetch } from "./client";
-import { UserLoginResponse } from "@/types/user";
+import { User, UserLoginResponse } from "@/types/user";
 
 export async function login(data: LoginFormData) {
   return apiFetch<UserLoginResponse>("/auth/login", {
