@@ -17,7 +17,7 @@ export default function RecommendationStoryCard({
         <img
           className="object-cover hover:scale-105 transition"
           src={transformLinkImage(data.coverUrl)}
-          alt="alttext"
+          alt={data.title}
         />
       </div>
       <div>
@@ -26,7 +26,7 @@ export default function RecommendationStoryCard({
         </p>
         <span className="flex gap-1 text-gray-500 dark:text-gray-400">
           <StarIcon className="w-4 h-4" />
-          <p className="text-sm">{data.ratingAvg || "4.8"}</p>
+          <p className="text-sm">{data.ratingAvg?.toFixed(1) || "4.8"}</p>
         </span>
       </div>
     </Link>

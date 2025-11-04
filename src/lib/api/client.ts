@@ -1,4 +1,5 @@
 import { getAccessToken } from "@/actions/auth";
+import { PaginationMeta } from "@/types/api";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
@@ -13,7 +14,7 @@ type ApiResponse<T> = {
   statusCode: number;
   message: string;
   timestamp: string;
-  meta?: Record<string, any>;
+  meta?: PaginationMeta;
 };
 
 export async function apiFetch<T>(

@@ -60,7 +60,7 @@ export function RankingDisplay({ stories, query, title }: RankingDisplayProps) {
                 <span className="flex items-center gap-1">
                   <StarIcon className="w-3.5 h-3.5 text-gray-500 dark:text-gray-400" />
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {story.ratingAvg || 5}
+                    {story.ratingAvg?.toFixed(1) || 5}
                   </p>
                 </span>
               </div>
