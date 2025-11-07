@@ -1,5 +1,4 @@
-import ChapterBody from "./components/chapter-body/chapter-body";
-import ChapterHeader from "./components/chapter-header/chapter-header";
+import ChapterSection from "./components/chapter-section/chapter-section";
 
 export default async function ChapterPage({
   params,
@@ -9,10 +8,7 @@ export default async function ChapterPage({
   const { slug } = await params;
   return (
     <section>
-      <ChapterHeader />
-      <div className="flex items-center justify-center">
-        <ChapterBody />
-      </div>
+      <ChapterSection />
     </section>
   );
 }

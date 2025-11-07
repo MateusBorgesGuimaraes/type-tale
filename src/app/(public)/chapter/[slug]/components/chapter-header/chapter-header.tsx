@@ -15,7 +15,7 @@ export default function ChapterHeader() {
           />
         </Link>
         <Link
-          className="text-lg text-cyan-950 font-semibold hover:text-cyan-700 transition"
+          className="text-lg text-cyan-950 dark:text-cyan-600 dark:hover:text-cyan-400 font-semibold hover:text-cyan-700 transition"
           href="/"
         >
           Blood Crown: Throne of Betrayal
@@ -24,10 +24,10 @@ export default function ChapterHeader() {
 
       <div className="flex items-center gap-2">
         <Link href="/">
-          <CircleArrowLeftIcon className="w-10 h-10 text-cyan-950 hover:text-cyan-600 transition" />
+          <CircleArrowLeftIcon className="w-10 h-10 text-cyan-950 hover:text-cyan-600 dark:text-cyan-600 dark:hover:text-cyan-400 transition" />
         </Link>
         <Link href="/">
-          <CircleArrowRightIcon className="w-10 h-10 text-cyan-950 hover:text-cyan-600 transition" />
+          <CircleArrowRightIcon className="w-10 h-10 text-cyan-950 hover:text-cyan-600 dark:text-cyan-600 dark:hover:text-cyan-400 transition" />
         </Link>
       </div>
     </nav>
