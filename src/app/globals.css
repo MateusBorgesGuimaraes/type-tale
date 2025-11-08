@@ -6,6 +6,7 @@
   --breakpoint-xm: 67.5rem; /* 1080px */
   --breakpoint-xms: 41.25rem; /* 660px */
   --breakpoint-sx: 30rem; /* 480px */
+  --breakpoint-minbr: 20.625rem; /* 330px */
 }
 
 @import "tailwindcss";

@@ -1,7 +1,7 @@
 import { subtractDate } from "@/lib/utils/subtract-date";
+import { VolumeWithChapters } from "@/types/volume";
 
 import Link from "next/link";
-import { VolumeWithChapters } from "../../../../../../../volume";
 
 type VolumeSectionProps = {
   startTop: boolean;
@@ -35,7 +35,7 @@ export function VolumeChapters({
             >
               <Link
                 className="text-gray-900 hover:text-cyan-500 dark:text-cyan-400 dark:hover:text-cyan-600 transition"
-                href={"/"}
+                href={`/chapter/${chapter.slug}`}
               >
                 Chapter: {chapter.visualPosition} {chapter.title}
               </Link>

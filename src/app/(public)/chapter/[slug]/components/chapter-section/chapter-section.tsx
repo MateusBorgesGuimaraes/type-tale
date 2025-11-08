@@ -2,16 +2,20 @@
 import { useEffect, useRef, useState } from "react";
 import ChapterBody from "../chapter-body/chapter-body";
 import ChapterHeader from "../chapter-header/chapter-header";
-import {
-  CircleArrowLeftIcon,
-  CircleArrowRightIcon,
-  TextAlignJustifyIcon,
-  XIcon,
-} from "lucide-react";
-import Link from "next/link";
-import VolumeList from "../volume-list/volume-list";
+import ChapterSidebar from "../chapter-sidebar/chapter-sidebar";
+import ChapterFooter from "../chapter-footer/chapter-footer";
+import { ChapterWithNavigation } from "@/types/chapter";
 
-export default function ChapterSection() {
+type ChapterSectionProps = {
+  chapter: ChapterWithNavigation;
+};
+
+const BOOK_CONFIG = {
+  title: "Blood Crown: Throne of Betrayal",
+  cover: "/mock-cover-1.jpg",
+};
+
+export default function ChapterSection({ chapter }: ChapterSectionProps) {
   const [showFooter, setShowFooter] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -19,15 +23,20 @@ export default function ChapterSection() {
 
   useEffect(() => {
     let lastScroll = window.scrollY;
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      if (currentScroll < lastScroll) {
-        setShowFooter(true);
-      } else {
-        setShowFooter(false);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScroll = window.scrollY;
+          setShowFooter(currentScroll < lastScroll);
+          lastScroll = currentScroll;
+          ticking = false;
+        });
+        ticking = true;
       }
-      lastScroll = currentScroll;
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -49,82 +58,64 @@ export default function ChapterSection() {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showSidebar]);
+
+  useEffect(() => {
+    document.body.style.overflow = showSidebar ? "hidden" : "unset";
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "unset";
     };
+  }, [showSidebar]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && showSidebar) {
+        setShowSidebar(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [showSidebar]);
 
   return (
     <div>
-      <ChapterHeader />
+      <ChapterHeader
+        storyTitle={chapter.volume.story.title}
+        storyCover={chapter.volume.story.coverUrl}
+        storySlug={chapter.volume.story.slug}
+        prevChapter={chapter.navigation.previous?.slug}
+        nextChapter={chapter.navigation.next?.slug}
+      />
+
       <div className="flex items-center justify-center">
-        <ChapterBody />
+        <ChapterBody
+          chapterContent={chapter.content}
+          chapterPostion={chapter.visualPosition}
+          chapterTitle={chapter.title}
+          prevChapter={chapter.navigation.previous?.slug}
+          nextChapter={chapter.navigation.next?.slug}
+        />
       </div>
 
-      <div
+      <ChapterSidebar
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-full w-[480px] bg-gray-50 dark:bg-gray-900 z-30 border-r-[14px] border-gray-200 dark:border-gray-800 transition-transform duration-300 ease-in-out overflow-y-auto ${
-          showSidebar ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div>
-          <div className="flex justify-between items-center sticky top-0  p-6">
-            <div>
-              <img
-                src="/mock-cover-1.jpg"
-                alt=""
-                className="w-[60px] h-[90px]"
-              />
-            </div>
-            <h2 className="text-lg font-bold text-cyan-950 dark:text-cyan-400">
-              Blood Crown: Throne of Betrayal
-            </h2>
-            <button
-              onClick={() => setShowSidebar(false)}
-              className="text-gray-600 hover:text-cyan-600 dark:text-gray-400 dark:hover:text-cyan-400 transition"
-            >
-              <XIcon className="w-6 h-6" />
-            </button>
-          </div>
-          <div className="border-y border-gray-300">
-            <VolumeList />
-            <VolumeList />
-            <VolumeList />
-            <VolumeList />
-            <VolumeList />
-            <VolumeList />
-          </div>
-        </div>
-      </div>
+        isOpen={showSidebar}
+        onClose={() => setShowSidebar(false)}
+        bookTitle={chapter.volume.story.title}
+        coverImage={chapter.volume.story.coverUrl}
+      />
 
-      <div
-        className={`fixed bottom-0 left-1/2 -translate-x-1/2 bg-gray-200 dark:bg-gray-900 text-cyan-950 dark:text-gray-200 w-full py-2 shadow-lg h-[80px] border-t border-gray-300 dark:border-gray-800 transition-all duration-300 ease-in-out z-50 ${
-          showFooter
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-full pointer-events-none"
-        }`}
-      >
-        <div className="wrapper flex h-full justify-between items-center">
-          <button
-            ref={buttonRef}
-            onClick={() => setShowSidebar(!showSidebar)}
-            className="flex gap-3 cursor-pointer items-center hover:text-cyan-400 transition"
-          >
-            <TextAlignJustifyIcon />
-            <p className="text-lg font-medium">
-              Blood Crown: Throne of Betrayal
-            </p>
-          </button>
-          <div className="flex items-center gap-2">
-            <Link href="/">
-              <CircleArrowLeftIcon className="w-10 h-10 text-cyan-950  hover:text-cyan-600 dark:text-cyan-400 dark:hover:text-cyan-600 transition" />
-            </Link>
-            <Link href="/">
-              <CircleArrowRightIcon className="w-10 h-10 text-cyan-950 hover:text-cyan-600 dark:text-cyan-400 dark:hover:text-cyan-600 transition" />
-            </Link>
-          </div>
-        </div>
-      </div>
+      <ChapterFooter
+        ref={buttonRef}
+        isVisible={showFooter}
+        onToggleSidebar={() => setShowSidebar(!showSidebar)}
+        isSidebarOpen={showSidebar}
+        bookTitle={chapter.volume.story.title}
+        prevChapterSlug={chapter.navigation.previous?.slug}
+        nextChapterSlug={chapter.navigation.next?.slug}
+      />
     </div>
   );
 }
