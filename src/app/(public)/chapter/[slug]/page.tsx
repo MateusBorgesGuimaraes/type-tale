@@ -1,4 +1,7 @@
-import { getChapterByIdOrSlug } from "@/lib/api/chapters";
+import {
+  getChapterByIdOrSlug,
+  getChaptersByStoryIdOrSlug,
+} from "@/lib/api/chapters";
 import ChapterSection from "./components/chapter-section/chapter-section";
 
 export default async function ChapterPage({
@@ -9,10 +12,13 @@ export default async function ChapterPage({
   const { slug } = await params;
 
   const { data: chapterData } = await getChapterByIdOrSlug(slug);
+  const { data: storyChaptersData } = await getChaptersByStoryIdOrSlug(
+    chapterData.volume.story.slug,
+  );
 
   return (
     <section>
-      <ChapterSection chapter={chapterData} />
+      <ChapterSection storyChapters={storyChaptersData} chapter={chapterData} />
     </section>
   );
 }

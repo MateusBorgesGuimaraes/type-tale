@@ -3,16 +3,18 @@ import { XIcon } from "lucide-react";
 import { forwardRef } from "react";
 import VolumeList from "../volume-list/volume-list";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
+import { StoryChapters } from "@/types/chapter";
 
 interface ChapterSidebarProps {
   isOpen: boolean;
+  storyChapters: StoryChapters;
   onClose: () => void;
   bookTitle: string;
   coverImage: string;
 }
 
 const ChapterSidebar = forwardRef<HTMLDivElement, ChapterSidebarProps>(
-  ({ isOpen, onClose, bookTitle, coverImage }, ref) => {
+  ({ isOpen, onClose, bookTitle, coverImage, storyChapters }, ref) => {
     return (
       <div
         ref={ref}
@@ -46,12 +48,14 @@ const ChapterSidebar = forwardRef<HTMLDivElement, ChapterSidebarProps>(
           </div>
 
           <div className="border-b border-gray-300 dark:border-gray-700">
-            <VolumeList />
-            <VolumeList styleType="variant2" />
-            <VolumeList />
-            <VolumeList styleType="variant2" />
-            <VolumeList />
-            <VolumeList styleType="variant2" />
+            {storyChapters.volumes.map((volume, index) => (
+              <VolumeList
+                key={volume.volume.id}
+                styleType={index % 2 !== 0 ? "variant1" : "variant2"}
+                volumeAndChapters={volume}
+                volumePosition={index + 1}
+              />
+            ))}
           </div>
         </div>
 

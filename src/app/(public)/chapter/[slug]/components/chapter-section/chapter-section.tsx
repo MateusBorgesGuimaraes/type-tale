@@ -4,18 +4,17 @@ import ChapterBody from "../chapter-body/chapter-body";
 import ChapterHeader from "../chapter-header/chapter-header";
 import ChapterSidebar from "../chapter-sidebar/chapter-sidebar";
 import ChapterFooter from "../chapter-footer/chapter-footer";
-import { ChapterWithNavigation } from "@/types/chapter";
+import { ChapterWithNavigation, StoryChapters } from "@/types/chapter";
 
 type ChapterSectionProps = {
   chapter: ChapterWithNavigation;
+  storyChapters: StoryChapters;
 };
 
-const BOOK_CONFIG = {
-  title: "Blood Crown: Throne of Betrayal",
-  cover: "/mock-cover-1.jpg",
-};
-
-export default function ChapterSection({ chapter }: ChapterSectionProps) {
+export default function ChapterSection({
+  chapter,
+  storyChapters,
+}: ChapterSectionProps) {
   const [showFooter, setShowFooter] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -101,6 +100,7 @@ export default function ChapterSection({ chapter }: ChapterSectionProps) {
 
       <ChapterSidebar
         ref={sidebarRef}
+        storyChapters={storyChapters}
         isOpen={showSidebar}
         onClose={() => setShowSidebar(false)}
         bookTitle={chapter.volume.story.title}
