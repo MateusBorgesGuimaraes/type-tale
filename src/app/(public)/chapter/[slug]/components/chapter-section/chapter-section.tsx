@@ -4,7 +4,9 @@ import ChapterBody from "../chapter-body/chapter-body";
 import ChapterHeader from "../chapter-header/chapter-header";
 import ChapterSidebar from "../chapter-sidebar/chapter-sidebar";
 import ChapterFooter from "../chapter-footer/chapter-footer";
+import Modal from "@/components/ui/modal/modal";
 import { ChapterWithNavigation, StoryChapters } from "@/types/chapter";
+import { PenToolIcon } from "lucide-react";
 
 type ChapterSectionProps = {
   chapter: ChapterWithNavigation;
@@ -17,6 +19,7 @@ export default function ChapterSection({
 }: ChapterSectionProps) {
   const [showFooter, setShowFooter] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
