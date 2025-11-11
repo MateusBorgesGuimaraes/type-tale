@@ -20,7 +20,7 @@ type CommentOrder = "liked" | "newest";
 type CommentsDisplayOrderProps = {
   commentsData: Comment[];
   meta: PaginationMeta;
-  storyId: string;
+  targetId: string;
   initialSortBy?: CommentOrder;
 };
 
@@ -55,8 +55,8 @@ export default function CommentsDisplayOrder({
   };
 
   return (
-    <div>
-      <div className="full-bleed bg-gray-100 dark:bg-gray-800 mt-6 pb-8">
+    <div id="comments-section">
+      <div className="full-bleed bg-transparent  mt-6 pb-8">
         <nav
           className="wrapper flex gap-6"
           role="tablist"

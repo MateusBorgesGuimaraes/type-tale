@@ -1,5 +1,7 @@
-import { Comment } from "@/types/comment";
+import { Comment, CommentWithoutRating } from "@/types/comment";
 import { apiFetch } from "./client";
+import { CommentFormData } from "@/schemas/comment";
+import { ApiError } from "next/dist/server/api-utils";
 
 export async function getCommentsByTargetAndId(
   target: "story" | "chapter" | "announcement",
@@ -19,4 +21,11 @@ export async function getCommentsByTargetAndId(
       },
     },
   );
+}
+
+export async function createComment(data: CommentFormData) {
+  return apiFetch<CommentWithoutRating | ApiError>(`/comments`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 }

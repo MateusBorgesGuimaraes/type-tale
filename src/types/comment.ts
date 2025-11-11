@@ -18,3 +18,5 @@ export type Comment = {
   user: SimpleAuthor;
   rating: Rating;
 };
+
+export type CommentWithoutRating = Omit<Comment, "rating">;

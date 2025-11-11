@@ -7,15 +7,22 @@ import ChapterFooter from "../chapter-footer/chapter-footer";
 import Modal from "@/components/ui/modal/modal";
 import { ChapterWithNavigation, StoryChapters } from "@/types/chapter";
 import { PenToolIcon } from "lucide-react";
+import CommentForm from "@/components/ui/forms/comment-form";
+import { CommentsSection } from "@/components/layout/comments-section/comments-section";
+import { Comment } from "@/types/comment";
+import { ApiResponse } from "@/types/api";
 
 type ChapterSectionProps = {
   chapter: ChapterWithNavigation;
   storyChapters: StoryChapters;
+  initialSortBy: "liked" | "newest";
+  commentsData: ApiResponse<Comment[]> | null;
 };
 
 export default function ChapterSection({
   chapter,
   storyChapters,
+  commentsData,
 }: ChapterSectionProps) {
   const [showFooter, setShowFooter] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
@@ -100,6 +107,34 @@ export default function ChapterSection({
           nextChapter={chapter.navigation.next?.slug}
         />
       </div>
+
+      <div className="py-8 border-t border-gray-200 dark:border-gray-700">
+        <button
+          className="py-3 px-4 flex gap-1  text-gray-500 dark:text-gray-300  bg-gray-200 dark:bg-gray-600 rounded-lg font-semibold cursor-pointer  hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-400 dark:hover:text-gray-400 transition"
+          onClick={() => setIsOpen(true)}
+        >
+          <PenToolIcon /> Write a comment
+        </button>
+        <Modal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          title="New commment"
+          subtitle="Share your opinion"
+          size="lg"
+        >
+          <CommentForm
+            setIsOpen={setIsOpen}
+            targetId={chapter.id}
+            targetType="chapter"
+          />
+        </Modal>
+      </div>
+
+      <CommentsSection
+        initialSortBy="liked"
+        commentsResponse={commentsData}
+        targetId={chapter.id}
+      />
 
       <ChapterSidebar
         ref={sidebarRef}

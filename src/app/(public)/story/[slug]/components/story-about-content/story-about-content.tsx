@@ -7,7 +7,7 @@ import { Tag } from "@/components/ui/tag/tag";
 import { TitleHeading2 } from "@/components/ui/title-heading2/title-heading2";
 import { useStory } from "../../story-context";
 import { ApiResponse } from "@/types/api";
-import CommentsDisplayOrder from "../comments-display-order/comments-display-order";
+import { CommentsSection } from "@/components/layout/comments-section/comments-section";
 
 type StoryAboutContentProps = {
   commentsResponse: ApiResponse<Comment[]> | null;
@@ -78,51 +78,9 @@ export default function StoryAboutContent({
         <CommentsSection
           commentsResponse={commentsResponse}
           initialSortBy={initialSortBy}
-          storyId={data.id}
+          targetId={data.id}
         />
       </div>
     </div>
-  );
-}
-
-function CommentsSection({
-  commentsResponse,
-  initialSortBy,
-  storyId,
-}: {
-  commentsResponse: ApiResponse<Comment[]> | null;
-  initialSortBy: "liked" | "newest";
-  storyId: string;
-}) {
-  if (!commentsResponse) {
-    return (
-      <p className="font-semibold text-red-600 dark:text-red-400">
-        Comments could not be loaded.
-      </p>
-    );
-  }
-
-  if (!commentsResponse.data || commentsResponse.data.length === 0) {
-    return (
-      <p className="font-semibold text-cyan-800 dark:text-cyan-400">
-        No comments yet
-      </p>
-    );
-  }
-
-  if (!commentsResponse.meta) {
-    return (
-      <p className="font-semibold text-red-600 dark:text-red-400">
-        Error loading pagination.
-      </p>
-    );
-  }
-  return (
-    <CommentsDisplayOrder
-      commentsData={commentsResponse.data}
-      meta={commentsResponse.meta}
-      storyId={storyId}
-      initialSortBy={initialSortBy}
-    />
   );
 }

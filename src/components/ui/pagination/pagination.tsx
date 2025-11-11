@@ -30,6 +30,8 @@ export default function Pagination({ meta }: PaginationProps) {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", newPage.toString());
     router.push(`${pathname}?${params.toString()}`);
+
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   const getPageNumbers = () => {

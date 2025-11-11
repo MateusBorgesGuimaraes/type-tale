@@ -65,7 +65,7 @@ export default function CustomInput({
             type="button"
             onClick={handleClear}
             className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-200 cursor-pointer"
-            aria-label="Limpar campo"
+            aria-label="Clean field"
           >
             <XIcon size={16} />
           </button>

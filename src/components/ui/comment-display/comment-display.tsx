@@ -1,13 +1,23 @@
 import { subtractDate } from "@/lib/utils/subtract-date";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
-import { Comment } from "@/types/comment";
+import { Comment, CommentWithoutRating } from "@/types/comment";
 import { MessageCircleWarningIcon, ThumbsUpIcon } from "lucide-react";
 import ShowRatingStars from "../rating-stars/show-rating-stars";
 import { calcRatingAvg } from "@/utils/calc-rating-avg";
 
 export type CommentDisplayProps = {
-  comment: Comment;
+  comment: Comment | CommentWithoutRating;
 };
+
+function hasRating(
+  comment: Comment | CommentWithoutRating,
+): comment is Comment {
+  return (
+    "rating" in comment &&
+    comment.rating !== null &&
+    comment.rating !== undefined
+  );
+}
 
 export default function CommentDisplay({ comment }: CommentDisplayProps) {
   return (
@@ -30,11 +40,13 @@ export default function CommentDisplay({ comment }: CommentDisplayProps) {
             <p className="text-cyan-950 dark:text-cyan-500 font-semibold">
               {comment.user.username}
             </p>
-            <ShowRatingStars
-              textSize="text-sm"
-              maxWidth={100}
-              avgRating={calcRatingAvg(comment.rating)}
-            />
+            {hasRating(comment) && (
+              <ShowRatingStars
+                textSize="text-sm"
+                maxWidth={100}
+                avgRating={calcRatingAvg(comment.rating)}
+              />
+            )}
           </div>
         </div>
 

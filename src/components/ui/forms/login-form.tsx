@@ -95,7 +95,7 @@ export default function LoginForm() {
       />
       <div className="flex flex-col gap-2">
         <ButtonForm disabled={isLoading}>
-          {isLoading ? "ENTRANDO..." : "LOGIN"}
+          {isLoading ? "LOGGING IN..." : "LOGIN"}
         </ButtonForm>
         <Link
           href={"/register"}
