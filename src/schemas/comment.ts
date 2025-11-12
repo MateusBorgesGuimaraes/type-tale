@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-const targets = ["story", "chapter", "annoucement"];
+const targets = ["story", "chapter", "announcement"];
 
 export const commentSchema = z.object({
   body: z

@@ -11,11 +11,11 @@ import CommentForm from "@/components/ui/forms/comment-form";
 import { CommentsSection } from "@/components/layout/comments-section/comments-section";
 import { Comment } from "@/types/comment";
 import { ApiResponse } from "@/types/api";
+import CreateCommentButton from "@/components/ui/create-comment-button/create-comment-button";
 
 type ChapterSectionProps = {
   chapter: ChapterWithNavigation;
   storyChapters: StoryChapters;
-  initialSortBy: "liked" | "newest";
   commentsData: ApiResponse<Comment[]> | null;
 };
 
@@ -109,12 +109,9 @@ export default function ChapterSection({
       </div>
 
       <div className="py-8 border-t border-gray-200 dark:border-gray-700">
-        <button
-          className="py-3 px-4 flex gap-1  text-gray-500 dark:text-gray-300  bg-gray-200 dark:bg-gray-600 rounded-lg font-semibold cursor-pointer  hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-400 dark:hover:text-gray-400 transition"
-          onClick={() => setIsOpen(true)}
-        >
+        <CreateCommentButton setIsOpen={setIsOpen}>
           <PenToolIcon /> Write a comment
-        </button>
+        </CreateCommentButton>
         <Modal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
@@ -131,7 +128,7 @@ export default function ChapterSection({
       </div>
 
       <CommentsSection
-        initialSortBy="liked"
+        initialSortBy={"liked"}
         commentsResponse={commentsData}
         targetId={chapter.id}
       />
