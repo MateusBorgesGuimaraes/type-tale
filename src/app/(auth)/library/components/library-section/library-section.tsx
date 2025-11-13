@@ -1,14 +1,42 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import StoryCardProgress from "@/components/ui/story-card-progress/story-card-progress";
 import LibraryHeader from "../library-header/library-header";
 import { ButtonForm } from "@/components/ui/button-form/button-form";
 import { Trash2Icon } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { getAllStoriesInUserLibrary } from "@/lib/api/library";
+import { ApiError } from "next/dist/server/api-utils";
+import { toast } from "sonner";
+import { AddedLibraryStoriesInfos } from "@/types/library";
 
 export default function LibrarySection() {
+  const { user } = useAuth();
   const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const [isEditMode, setIsEditMode] = useState(false);
+  const [stories, setStories] = useState<AddedLibraryStoriesInfos[] | null>(
+    null,
+  );
+  const [errorMessage, setErrorMessage] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (user) {
+      const getUserBooksInLibrary = async () => {
+        const { data } = await getAllStoriesInUserLibrary();
+        if ("message" in data && "statusCode" in data) {
+          toast.error(data.message);
+          return;
+        }
+        if (Array.isArray(data)) {
+          console.log("Histórias na biblioteca:", data);
+          setStories(data);
+        }
+      };
+      getUserBooksInLibrary();
+    }
+  }, []);
 
   const handleToggleEditMode = () => {
     setIsEditMode(!isEditMode);
