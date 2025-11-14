@@ -13,7 +13,9 @@ export type AddedLibraryStoriesInfos = {
   id: string;
   storyId: string;
   storyTitle: string;
+  storySlug: string;
   coverUrl: string;
+  createdAt: Date;
   lastChapterInfos: {
     lastChapterReadId: string;
     lastChapterReadTitle: string;

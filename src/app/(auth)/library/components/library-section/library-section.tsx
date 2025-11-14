@@ -1,25 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StoryCardProgress from "@/components/ui/story-card-progress/story-card-progress";
 import LibraryHeader from "../library-header/library-header";
 import { ButtonForm } from "@/components/ui/button-form/button-form";
 import { Trash2Icon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { getAllStoriesInUserLibrary } from "@/lib/api/library";
-import { ApiError } from "next/dist/server/api-utils";
 import { toast } from "sonner";
 import { AddedLibraryStoriesInfos } from "@/types/library";
+import { removeStoriesBulk } from "@/actions/library";
 
 export default function LibrarySection() {
   const { user } = useAuth();
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
   const [isEditMode, setIsEditMode] = useState(false);
+  const [order, setOrder] = useState<"newest" | "oldest">("newest");
   const [stories, setStories] = useState<AddedLibraryStoriesInfos[] | null>(
     null,
   );
-  const [errorMessage, setErrorMessage] = useState("");
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string | string[]>("");
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (user) {
@@ -27,10 +27,10 @@ export default function LibrarySection() {
         const { data } = await getAllStoriesInUserLibrary();
         if ("message" in data && "statusCode" in data) {
           toast.error(data.message);
+          setErrorMessage(data.message);
           return;
         }
         if (Array.isArray(data)) {
-          console.log("Histórias na biblioteca:", data);
           setStories(data);
         }
       };
@@ -43,27 +43,50 @@ export default function LibrarySection() {
     setSelectedIds([]);
   };
 
-  const handleToggleSelect = (id: number) => {
+  const handleToggleSelect = (id: string) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (selectedIds.length === 0) return;
 
-    // Chamar API para deletar
-    console.log("Deletando IDs:", selectedIds);
-
-    // Limpar os Id e mudar o status dpeois de deletar
-    setSelectedIds([]);
-    setIsEditMode(false);
-    // Revalidar os dados com da biblioteca do usuario
+    try {
+      const response = await removeStoriesBulk({ storyIds: selectedIds });
+      if (response?.message) {
+        toast.success(
+          `${selectedIds.length > 1 ? "Stories" : "Story"} successfully removed`,
+        );
+        setStories(
+          (prev) => prev?.filter((s) => !selectedIds.includes(s.storyId)) ?? [],
+        );
+      } else {
+        toast.error("Failed to remove stories");
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err.message || "Error removing stories");
+    } finally {
+      setSelectedIds([]);
+      setIsEditMode(false);
+    }
   };
+
+  const oldestStories = () => {
+    if (!stories) return null;
+    return [...stories].sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  };
+
+  const currentStoryOrder = order === "newest" ? stories : oldestStories();
 
   return (
     <section>
       <LibraryHeader
+        order={order}
+        changeOrder={setOrder}
         isEditMode={isEditMode}
         onToggleEditMode={handleToggleEditMode}
       />
@@ -88,17 +111,30 @@ export default function LibrarySection() {
         </div>
       )}
 
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 p-4">
-        {arr.map((id) => (
-          <StoryCardProgress
-            key={id}
-            id={id}
-            isEditMode={isEditMode}
-            isSelected={selectedIds.includes(id)}
-            onToggleSelect={handleToggleSelect}
-          />
-        ))}
-      </div>
+      {currentStoryOrder && currentStoryOrder.length > 0 ? (
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] lg:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4 p-4">
+          {currentStoryOrder.map((story) => (
+            <StoryCardProgress
+              key={story.storyId}
+              coverUrl={story.coverUrl}
+              lastChapterInfos={story.lastChapterInfos}
+              readingProgress={story.readingProgress}
+              storySlug={story.storySlug}
+              storyTitle={story.storyTitle}
+              id={story.storyId}
+              isEditMode={isEditMode}
+              isSelected={selectedIds.includes(story.storyId)}
+              onToggleSelect={handleToggleSelect}
+            />
+          ))}
+        </div>
+      ) : (
+        <p>
+          {errorMessage.length > 0
+            ? errorMessage
+            : "No stories found in library"}{" "}
+        </p>
+      )}
     </section>
   );
 }

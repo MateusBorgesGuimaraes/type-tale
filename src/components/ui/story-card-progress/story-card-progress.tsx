@@ -1,17 +1,35 @@
 "use client";
+import { transformLinkImage } from "@/lib/utils/transform-link-image";
 import { CheckCircle2Icon, CircleIcon } from "lucide-react";
 import Link from "next/link";
 
 interface StoryCardProgressProps {
-  id: number;
+  id: string;
   isEditMode?: boolean;
   isSelected?: boolean;
-  onToggleSelect?: (id: number) => void;
+  coverUrl: string;
+  storySlug: string;
+  storyTitle: string;
+  lastChapterInfos: {
+    lastChapterReadId: string;
+    lastChapterReadTitle: string;
+    lastChapterReadSlug: string;
+  } | null;
+  readingProgress: {
+    totalChapters: number;
+    actualChapter: number;
+  } | null;
+  onToggleSelect?: (id: string) => void;
 }
 
 export default function StoryCardProgress({
   id,
   isEditMode = false,
+  coverUrl,
+  lastChapterInfos,
+  storySlug,
+  readingProgress,
+  storyTitle,
   isSelected = false,
   onToggleSelect,
 }: StoryCardProgressProps) {
@@ -39,23 +57,30 @@ export default function StoryCardProgress({
       )}
 
       <Link
-        href={"/"}
+        href={`/story/${storySlug}`}
         className={`w-full aspect-[2/3] overflow-hidden rounded-md ${
           isSelected ? "ring-4 ring-cyan-600 dark:ring-cyan-400" : ""
         }`}
       >
         <img
-          src="/mock-cover-1.jpg"
+          src={transformLinkImage(coverUrl)}
           alt="cover"
           className="w-full h-full object-cover"
         />
       </Link>
 
       <p className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2">
-        Rebirth of the Thousand Shadows
+        {storyTitle}
       </p>
       <span className="text-sm text-gray-600 dark:text-gray-400">
-        Progress 40/221
+        {readingProgress && lastChapterInfos ? (
+          <Link href={`/chapter/${lastChapterInfos.lastChapterReadSlug}`}>
+            Progress {readingProgress.actualChapter}/
+            {readingProgress.totalChapters}
+          </Link>
+        ) : (
+          "Story not started yet"
+        )}
       </span>
     </div>
   );

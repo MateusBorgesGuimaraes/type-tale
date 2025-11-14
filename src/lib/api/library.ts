@@ -31,3 +31,10 @@ export async function getAllStoriesInUserLibrary() {
     },
   });
 }
+
+export async function removeMultipleStoriesFromUserLibrary(ids: string[]) {
+  return apiFetch<{ message: string }>(`/library/bulk`, {
+    method: "DELETE",
+    body: JSON.stringify({ storyIds: ids }),
+  });
+}

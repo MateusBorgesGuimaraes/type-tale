@@ -13,7 +13,7 @@ export default function VolumeSection({ volumns }: VolumeSectionProps) {
   const [listOrderStart, setListOrderStart] = useState(true);
 
   const lastChapter = useMemo(() => {
-    if (volumns.story.chaptersCount === 0) return "No chapter";
+    if (volumns.story.chaptersCount === 0) return null;
     const lastVolume = volumns.volumes[volumns.volumes.length - 1];
     return lastVolume.chapters[lastVolume.chapters.length - 1];
   }, [volumns]);

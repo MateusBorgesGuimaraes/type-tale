@@ -8,7 +8,7 @@ import { Dispatch, SetStateAction } from "react";
 
 type ChapterHeaderProps = {
   action: Dispatch<SetStateAction<boolean>>;
-  lastChapter: SimpleChapter | string;
+  lastChapter: SimpleChapter | string | null;
   listOrderStart: boolean;
 };
 
@@ -17,10 +17,13 @@ export default function ChapterHeader({
   listOrderStart,
   lastChapter,
 }: ChapterHeaderProps) {
+  const isValidChapter =
+    lastChapter && typeof lastChapter !== "string" && "title" in lastChapter;
+
   return (
     <div className="flex justify-between items-center sm:text-normal text-xs">
-      {typeof lastChapter === "string" ? (
-        <p>{lastChapter}</p>
+      {!isValidChapter ? (
+        <p>No chapters published yet</p>
       ) : (
         <p className="text-cyan-950 dark:text-gray-100 font-medium flex sm:gap-3 gap-1 flex-wrap">
           Last realease:
