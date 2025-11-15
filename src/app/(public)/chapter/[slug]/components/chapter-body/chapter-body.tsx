@@ -1,5 +1,9 @@
+"use client";
+
 import { LinkButton } from "@/components/ui/link-buttons/link-button";
+import { useReadingProgress } from "@/hooks/use-reading-progress";
 import Link from "next/link";
+import { useEffect } from "react";
 
 type ChapterBodyProps = {
   chapterTitle: string;
@@ -7,6 +11,8 @@ type ChapterBodyProps = {
   chapterPostion: number;
   nextChapter: string | undefined;
   prevChapter: string | undefined;
+  storyId: string;
+  chapterId: string;
 };
 
 export default function ChapterBody({
@@ -15,7 +21,15 @@ export default function ChapterBody({
   nextChapter,
   prevChapter,
   chapterPostion,
+  storyId,
+  chapterId,
 }: ChapterBodyProps) {
+  const { updateProgress } = useReadingProgress({ storyId, chapterId });
+
+  useEffect(() => {
+    updateProgress(false);
+  }, [chapterId, updateProgress]);
+
   return (
     <div className="w-[896px] max-w-full">
       <h1 className="text-cyan-800 dark:text-cyan-600 font-semibold sx:text-3xl text-xl pt-3 sx:pb-12 pb-6">

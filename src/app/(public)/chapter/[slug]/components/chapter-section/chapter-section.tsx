@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import ChapterBody from "../chapter-body/chapter-body";
 import ChapterHeader from "../chapter-header/chapter-header";
@@ -103,6 +104,8 @@ export default function ChapterSection({
           chapterContent={chapter.content}
           chapterPostion={chapter.visualPosition}
           chapterTitle={chapter.title}
+          chapterId={chapter.id}
+          storyId={chapter.volume.story.id}
           prevChapter={chapter.navigation.previous?.slug}
           nextChapter={chapter.navigation.next?.slug}
         />

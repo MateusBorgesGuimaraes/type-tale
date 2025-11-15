@@ -17,6 +17,7 @@ export type Comment = {
   updatedAt: Date;
   user: SimpleAuthor;
   rating: Rating;
+  isLiked: boolean;
 };
 
 export type CommentWithoutRating = Omit<Comment, "rating">;
