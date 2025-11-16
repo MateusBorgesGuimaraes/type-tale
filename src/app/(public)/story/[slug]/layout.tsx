@@ -52,7 +52,7 @@ export default async function StoryLayout({
 
   return (
     <StoryProvider value={{ data, storiesRecommendationsData }}>
-      <div>
+      <div className="wrapper">
         <div className="md:pt-8 md:pb-12 pt-6 pb-8">
           <Breadcrumb data={breadcrumbsData} />
         </div>

@@ -4,6 +4,7 @@ import {
   BookMarkedIcon,
   ChevronDownIcon,
   CompassIcon,
+  LayoutDashboardIcon,
   LogInIcon,
   LogOutIcon,
   NotebookPenIcon,
@@ -31,6 +32,7 @@ export function UserModal() {
 
   const menuItemsLogedIn = [
     { href: "/me", icon: UserRoundPenIcon, label: "User Profile" },
+    { href: "/dashboard", icon: LayoutDashboardIcon, label: "Dashboard" },
     { href: "/browse", icon: CompassIcon, label: "Browse" },
     { href: "/library", icon: BookMarkedIcon, label: "Library books" },
     { href: "/my-stories", icon: NotebookPenIcon, label: "My Stories" },

@@ -43,7 +43,7 @@ export default async function AnnoucementPage({
   ];
 
   return (
-    <div>
+    <div className="wrapper">
       <div className="sx:py-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <Breadcrumb data={breadcrumbsData} />
       </div>

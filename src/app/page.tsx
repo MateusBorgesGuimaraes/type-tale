@@ -31,7 +31,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div>
+    <div className="wrapper">
       <HeroSection
         annoucements={annoucementsResponse.data}
         highlight={highlightsResponse.data}

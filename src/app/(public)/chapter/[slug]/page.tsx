@@ -35,7 +35,7 @@ export default async function ChapterPage({ params, searchParams }: PageProps) {
   }
 
   return (
-    <section>
+    <section className="wrapper">
       <ChapterSection
         commentsData={commentsResponse}
         storyChapters={storyChaptersData}
