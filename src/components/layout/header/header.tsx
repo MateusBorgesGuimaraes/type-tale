@@ -16,7 +16,7 @@ export function Header() {
   return (
     <nav className="border-b border-gray-200 dark:border-gray-700 py-3">
       <div className="wrapper flex justify-between items-center">
-        <div className="flex items-center gap-20">
+        <div className="flex items-center xl:gap-20 ga-12">
           <Link href={"/"}>
             <img
               src={"/icon-black.svg"}
@@ -25,14 +25,14 @@ export function Header() {
             />
           </Link>
 
-          <ul className="xm:flex hidden items-center gap-8">
+          <ul className="xm:flex hidden items-center xl:gap-8 gap-3">
             <li className="hover:bg-gray-200 dark:hover:bg-gray-700 px-2 py-1 rounded-sm transition">
               <Link
-                className="flex items-center justify-center gap-1.5"
+                className="flex items-center justify-center xl:gap-1.5 gap-1"
                 href={"/browse"}
               >
                 <CompassIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
-                <p className="text-gray-900 dark:text-gray-50 font-normal text-xl">
+                <p className="text-gray-900 dark:text-gray-50 font-normal xl:text-xl text-base">
                   Browse
                 </p>
               </Link>
@@ -40,11 +40,11 @@ export function Header() {
 
             <li className="hover:bg-gray-200 dark:hover:bg-gray-700 px-2 py-1 rounded-sm transition">
               <Link
-                className="flex items-center justify-center gap-1.5"
+                className="flex items-center justify-center xl:gap-1.5 gap-1"
                 href={"/library"}
               >
                 <BookMarkedIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
-                <p className="text-gray-900 dark:text-gray-50 font-normal text-xl">
+                <p className="text-gray-900 dark:text-gray-50 font-normal xl:text-xl text-base">
                   Library
                 </p>
               </Link>
@@ -52,11 +52,11 @@ export function Header() {
 
             <li className="hover:bg-gray-200 dark:hover:bg-gray-700 px-2 py-1 rounded-sm transition">
               <Link
-                className="flex items-center justify-center gap-1.5"
+                className="flex items-center justify-center xl:gap-1.5 gap-1"
                 href={`${isLogged ? "/dashboard" : "/login"}`}
               >
                 <LayoutDashboardIcon className="text-gray-900 dark:text-gray-50 xms:w-6 xms:h-6 w-5 h-5" />
-                <p className="text-gray-900 dark:text-gray-50 font-normal text-xl">
+                <p className="text-gray-900 dark:text-gray-50 font-normal xl:text-xl text-base">
                   Dashboard
                 </p>
               </Link>

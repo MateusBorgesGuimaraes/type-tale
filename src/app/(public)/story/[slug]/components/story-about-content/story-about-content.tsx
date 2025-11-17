@@ -8,6 +8,11 @@ import { TitleHeading2 } from "@/components/ui/title-heading2/title-heading2";
 import { useStory } from "../../story-context";
 import { ApiResponse } from "@/types/api";
 import { CommentsSection } from "@/components/layout/comments-section/comments-section";
+import { useState } from "react";
+import CreateCommentButton from "@/components/ui/create-comment-button/create-comment-button";
+import { PenToolIcon } from "lucide-react";
+import Modal from "@/components/ui/modal/modal";
+import ReviewCommentForm from "@/components/ui/forms/review-comment-form";
 
 type StoryAboutContentProps = {
   commentsResponse: ApiResponse<Comment[]> | null;
@@ -19,6 +24,7 @@ export default function StoryAboutContent({
   initialSortBy,
 }: StoryAboutContentProps) {
   const { data, storiesRecommendationsData } = useStory();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="full-bleed bg-gray-100 dark:bg-gray-800 pb-8">
@@ -74,12 +80,27 @@ export default function StoryAboutContent({
             ))}
           </ul>
         </div>
-
-        <CommentsSection
-          commentsResponse={commentsResponse}
-          initialSortBy={initialSortBy}
-          targetId={data.id}
-        />
+        <div>
+          <div className="py-8 border-t border-gray-200 dark:border-gray-700">
+            <CreateCommentButton setIsOpen={setIsOpen}>
+              <PenToolIcon /> Write a review
+            </CreateCommentButton>
+            <Modal
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+              title="New review"
+              subtitle="Share your opinion"
+              size="auto"
+            >
+              <ReviewCommentForm setIsOpen={setIsOpen} targetId={data.id} />
+            </Modal>
+          </div>
+          <CommentsSection
+            commentsResponse={commentsResponse}
+            initialSortBy={initialSortBy}
+            targetId={data.id}
+          />
+        </div>
       </div>
     </div>
   );
