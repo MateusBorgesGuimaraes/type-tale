@@ -29,3 +29,16 @@ export async function createComment(data: CommentFormData) {
     body: JSON.stringify(data),
   });
 }
+
+export async function updateComment(body: string, commentId: string) {
+  return apiFetch<CommentWithoutRating | ApiError>(`/comments/${commentId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ body: body }),
+  });
+}
+
+export async function deleteComment(commentId: string) {
+  return apiFetch<{ message: string } | ApiError>(`/comments/${commentId}`, {
+    method: "DELETE",
+  });
+}
