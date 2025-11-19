@@ -4,6 +4,7 @@ import {
   Story,
   StoryRecommendation,
   StorySearchParams,
+  StorySearchParamsFull,
   StorySearchResult,
 } from "@/types/stories";
 import { apiFetch } from "./client";
@@ -59,7 +60,7 @@ export async function getStoriesRecommendationsByIdOrSlug(param: string) {
   });
 }
 
-export async function getStories(params: StorySearchParams = {}) {
+export async function getStories(params: StorySearchParamsFull = {}) {
   const queryString = buildQueryString(params);
 
   return apiFetch<StorySearchResult[]>(`/stories${queryString}`, {
