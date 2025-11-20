@@ -20,6 +20,8 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  if (!user) return null;
+
   const privateRoutes = [
     {
       icon: HighlighterIcon,
@@ -45,82 +47,112 @@ export default function Sidebar() {
     { icon: Settings, label: "Configurações", href: "/dashboard/settings" },
   ];
 
-  if (!user) return;
-
   const userPermissions =
     user.role === "publisher"
       ? [...privateRoutes, ...publicRoutes]
       : publicRoutes;
 
   return (
-    <div
-      role="navigation"
-      aria-label="Dashboard menu"
-      className={`absolute left-0 top-0 h-full bg-gray-50 dark:bg-gray-900 transition-all duration-300 ease-in-out border-r border-gray-200 dark:border-gray-700 ${
-        isOpen ? "w-[280px]" : "w-[68px]"
-      }`}
-    >
-      <div className="h-full overflow-y-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 p-4 border-b border-gray-300 dark:border-gray-700">
-          <div
-            className={`flex items-center gap-2 overflow-hidden transition-all duration-300 ${
-              isOpen ? "opacity-100 w-auto" : "opacity-0 w-0"
-            }`}
-          >
-            <h2 className="text-lg font-bold text-cyan-950 dark:text-cyan-400 whitespace-nowrap">
-              Dashboard
-            </h2>
+    <>
+      <div
+        role="navigation"
+        aria-label="Dashboard menu"
+        className={`
+          hidden md:block
+          absolute left-0 top-0 h-full
+          bg-gray-50 dark:bg-gray-900
+          border-r border-gray-200 dark:border-gray-700
+          dark:rounded-br-xl
+          transition-all duration-300
+          ${isOpen ? "w-[260px]" : "w-[68px]"}
+        `}
+      >
+        <div className="h-full overflow-y-auto">
+          <div className="flex justify-between items-center sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 p-4 border-b border-gray-300 dark:border-gray-700">
+            <div
+              className={`flex items-center gap-2 overflow-hidden transition-all duration-300 ${
+                isOpen ? "opacity-100 w-auto" : "opacity-0 w-0"
+              }`}
+            >
+              <h2 className="text-lg font-bold text-cyan-950 dark:text-cyan-400 whitespace-nowrap">
+                Dashboard
+              </h2>
+            </div>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className={`text-gray-600 hover:text-cyan-600 dark:text-gray-400 dark:hover:text-cyan-400 transition-transform duration-300 ${
+                isOpen ? "" : "rotate-180"
+              }`}
+            >
+              <ChevronsRight className="w-6 h-6" />
+            </button>
           </div>
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Recolher menu" : "Expandir menu"}
-            className={`text-gray-600 hover:text-cyan-600 dark:text-gray-400 dark:hover:text-cyan-400 transition-transform duration-300 ${
-              isOpen ? "" : "rotate-180"
-            }`}
-          >
-            <ChevronsRight className="w-6 h-6" />
-          </button>
-        </div>
 
-        <nav className="p-2 mt-4">
-          <ul className="space-y-2">
-            {userPermissions.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
+          <nav className="p-2 mt-4">
+            <ul className="space-y-2">
+              {userPermissions.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
 
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 ${
-                      isActive
-                        ? "bg-gray-800 dark:bg-gray-800 text-cyan-400"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800"
-                    }`}
-                    title={!isOpen ? item.label : undefined}
-                  >
-                    <Icon
-                      className={`w-6 h-6 flex-shrink-0 ${
-                        isActive ? "text-cyan-400" : ""
-                      }`}
-                    />
-                    <span
-                      className={`whitespace-nowrap transition-all duration-300 ${
-                        isOpen
-                          ? "opacity-100 w-auto"
-                          : "opacity-0 w-0 overflow-hidden"
-                      }`}
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className={`flex items-center p-3 rounded-lg transition-all ${
+                        isActive
+                          ? "bg-gray-800 dark:bg-gray-800 text-cyan-400"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800"
+                      } ${isOpen && "gap-3"}`}
+                      title={!isOpen ? item.label : undefined}
                     >
-                      {item.label}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+                      <Icon className="w-6 h-6" />
+                      <span
+                        className={`whitespace-nowrap transition-all duration-300 ${
+                          isOpen
+                            ? "opacity-100 w-auto"
+                            : "opacity-0 w-0 overflow-hidden"
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
       </div>
-    </div>
+
+      <div
+        className="
+          md:hidden
+          fixed bottom-0 left-0 right-0
+          bg-gray-50 dark:bg-gray-900
+          border-t border-gray-200 dark:border-gray-700
+          px-2 py-2
+          flex justify-around
+          shadow-lg
+          z-50
+        "
+      >
+        {userPermissions.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname === item.href;
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex flex-col items-center justify-center w-full py-1 ${
+                isActive ? "text-cyan-500" : "text-gray-600 dark:text-gray-300"
+              }`}
+            >
+              <Icon className="w-6 h-6" />
+            </Link>
+          );
+        })}
+      </div>
+    </>
   );
 }

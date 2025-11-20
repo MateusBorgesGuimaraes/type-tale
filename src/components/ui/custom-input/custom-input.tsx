@@ -34,7 +34,7 @@ export default function CustomInput({
     <div className="w-full flex flex-col gap-1 group">
       <label
         htmlFor={inputId}
-        className="uppercase font-medium text-sm text-gray-500 dark:text-gray-100 dark:sx:text-gray-900 transition-colors group-focus-within:text-gray-800 "
+        className="uppercase font-medium text-sm text-gray-500 dark:text-gray-100  transition-colors group-focus-within:text-gray-800 "
       >
         {required && <span className="mr-1 text-red-500">*</span>}
         {label}

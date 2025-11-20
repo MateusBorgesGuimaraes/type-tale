@@ -82,13 +82,15 @@ export async function apiFetchClient<T>(
   options: RequestInit = {},
 ): Promise<ApiResponse<T>> {
   try {
+    const isFormData = options.body instanceof FormData;
+
     const response = await fetch(`${BASE_URL}${endpoint}`, {
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
       credentials: "include",
       ...options,
+      headers: {
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
+        ...options.headers,
+      },
     });
 
     const contentType = response.headers.get("content-type") || "";
@@ -118,9 +120,8 @@ export async function apiFetchClient<T>(
       meta: rawData.meta,
     };
   } catch (error: any) {
-    if (error?.statusCode) {
-      throw error;
-    }
+    if (error?.statusCode) throw error;
+
     throw {
       message: "Connection to the server failed.",
       error: error instanceof Error ? error.message : "Unknown error",
