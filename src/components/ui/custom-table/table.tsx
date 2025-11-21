@@ -18,7 +18,7 @@ export function CustomTable<T extends Record<string, any>>({
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full text-sm text-left">
-        <thead className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 uppercase">
+        <thead className=" text-gray-700 dark:text-gray-300 uppercase">
           <tr>
             {columns.map((col) => (
               <th key={String(col.key)} className="px-6 py-3">

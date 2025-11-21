@@ -1,4 +1,5 @@
-import CustomSelect from "@/components/ui/custom-select/custom-select";
+import GenericSelect from "@/components/ui/generic-select/generic-select";
+
 import {
   GENRES,
   LANGUAGES,
@@ -34,52 +35,57 @@ export function FilterSidebar({
         </div>
 
         <div className="mb-4">
-          <CustomSelect
-            items={STORY_TYPE}
+          <GenericSelect
             label="Story Type"
-            target="storyType"
-            onChange={onFilterChange}
             value={filters.storyType}
+            items={STORY_TYPE}
+            onChangeAction={(val) => onFilterChange("storyType", val)}
+            getLabelAction={(i) => i.label}
+            getValueAction={(i) => i.value}
           />
         </div>
 
         <div className="mb-4">
-          <CustomSelect
-            items={GENRES}
+          <GenericSelect
             label="Main Genre"
-            target="mainGenre"
-            onChange={onFilterChange}
             value={filters.mainGenre}
+            items={GENRES}
+            onChangeAction={(val) => onFilterChange("mainGenre", val)}
+            getLabelAction={(i) => i.label}
+            getValueAction={(i) => i.value}
           />
         </div>
 
         <div className="mb-4">
-          <CustomSelect
-            items={LANGUAGES}
+          <GenericSelect
             label="Languages"
-            target="language"
-            onChange={onFilterChange}
             value={filters.language}
+            items={LANGUAGES}
+            onChangeAction={(val) => onFilterChange("language", val)}
+            getLabelAction={(i) => i.label}
+            getValueAction={(i) => i.value}
           />
         </div>
 
         <div className="mb-4">
-          <CustomSelect
-            items={STATUS_OPTIONS}
+          <GenericSelect
             label="Status"
-            target="status"
-            onChange={onFilterChange}
             value={filters.status}
+            items={STATUS_OPTIONS}
+            onChangeAction={(val) => onFilterChange("status", val)}
+            getLabelAction={(i) => i.label}
+            getValueAction={(i) => i.value}
           />
         </div>
 
         <div className="mb-4">
-          <CustomSelect
-            items={SORT_OPTIONS}
+          <GenericSelect
             label="Order by"
-            target="sortBy"
-            onChange={onFilterChange}
             value={filters.sortBy}
+            items={SORT_OPTIONS}
+            onChangeAction={(val) => onFilterChange("sortBy", val)}
+            getLabelAction={(i) => i.label}
+            getValueAction={(i) => i.value}
           />
         </div>
 
@@ -95,10 +101,10 @@ export function FilterSidebar({
                     : "bg-gray-200 dark:bg-gray-400 hover:bg-gray-300 dark:hover:bg-gray-500"
                 }`}
                 aria-pressed={filters.sortOrder === "DESC"}
-                aria-label="Sort descending"
               >
                 ↓ Desc
               </button>
+
               <button
                 onClick={() => onFilterChange("sortOrder", "ASC")}
                 className={`flex-1 py-2 rounded-lg transition cursor-pointer ${
@@ -107,7 +113,6 @@ export function FilterSidebar({
                     : "bg-gray-200 dark:bg-gray-400 hover:bg-gray-300 dark:hover:bg-gray-500"
                 }`}
                 aria-pressed={filters.sortOrder === "ASC"}
-                aria-label="Sort ascending"
               >
                 ↑ Asc
               </button>

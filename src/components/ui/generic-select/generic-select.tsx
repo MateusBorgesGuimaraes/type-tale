@@ -1,43 +1,55 @@
-import { Filters } from "@/types/stories";
+"use client";
+
 import { ChevronDown } from "lucide-react";
 
-type CustomSelectProps = {
+type GenericSelectProps<T> = {
   label: string;
-  value: string;
-  target: keyof Filters;
-  onChange: (key: keyof Filters, value: string | number) => void;
-  items: { label: string; value: string }[];
+  value: string | number | undefined;
+  onChangeAction: (value: string | number) => void;
+
+  items: T[];
+
+  getLabelAction: (item: T) => string;
+
+  getValueAction: (item: T) => string | number;
+
+  showAllOption?: boolean;
 };
 
-export default function CustomSelect({
+export default function GenericSelect<T>({
   label,
-  onChange,
   value,
-  target,
+  onChangeAction,
   items,
-}: CustomSelectProps) {
+  getLabelAction,
+  getValueAction,
+  showAllOption = true,
+}: GenericSelectProps<T>) {
   return (
     <div>
       <label className="block text-sm font-medium mb-2 dark:text-cyan-500">
         {label}
       </label>
+
       <div className="relative">
         <select
-          value={value}
-          onChange={(e) => onChange(target, e.target.value)}
+          value={value ?? ""}
+          onChange={(e) => onChangeAction(e.target.value)}
           className="
             w-full px-3 py-2 border border-gray-300 dark:border-gray-400 rounded-lg
-            focus:outline-none focus:ring-2 focus:ring-cyan-700
+            focus:outline-none
             appearance-none pr-10 cursor-pointer
             bg-white dark:bg-gray-300 text-gray-700 dark:text-gray-800"
         >
-          <option value="">All</option>
-          {items.map((item) => (
-            <option key={item.value} value={item.value}>
-              {item.label}
+          {showAllOption && <option value="">All</option>}
+
+          {items.map((item, index) => (
+            <option key={index} value={getValueAction(item)}>
+              {getLabelAction(item)}
             </option>
           ))}
         </select>
+
         <ChevronDown
           className="
             absolute right-3 top-1/2 -translate-y-1/2

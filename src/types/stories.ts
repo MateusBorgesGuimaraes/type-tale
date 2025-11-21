@@ -27,6 +27,8 @@ export type Story = {
   author: Author;
 };
 
+export type StoryWithoutAuthor = Omit<Story, "author">;
+
 export type StoryCleanner = Pick<
   Story,
   "id" | "title" | "slug" | "chaptersCount"

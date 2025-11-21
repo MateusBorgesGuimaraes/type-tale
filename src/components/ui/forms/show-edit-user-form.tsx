@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import CustomTextarea from "../custom-textarea/custom-textarea";
 import { ButtonForm } from "../button-form/button-form";
-import { UserProfile } from "@/types/user";
+import { User } from "@/types/user";
 import {
   updateUserProfileSchema,
   UpdateUserProfileSchema,
@@ -17,7 +17,7 @@ import { updateUserProfile } from "@/lib/api/user";
 import CustomInput from "../custom-input/custom-input";
 
 interface ShowEditUserFormProps {
-  userProfile: UserProfile;
+  userProfile: User;
   enabled: boolean;
 }
 

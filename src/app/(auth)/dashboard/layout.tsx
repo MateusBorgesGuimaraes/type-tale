@@ -8,7 +8,7 @@ export default async function DashboardLayout({
   return (
     <div className="relative min-h-screen flex">
       <Sidebar />
-      <div className="flex-1 md:ml-[68px]">
+      <div className="flex-1 md:ml-[68px] overflow-x-auto">
         <main className="py-6">{children}</main>
       </div>
     </div>

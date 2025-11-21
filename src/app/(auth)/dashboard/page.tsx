@@ -1,9 +1,12 @@
+import LayoutBox from "./components/layout-box/layout-box";
 import UserPersonalInfos from "./components/user-personal-infos/user-personal-infos";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   return (
     <div className="wrapper">
-      <UserPersonalInfos />
+      <LayoutBox>
+        <UserPersonalInfos />
+      </LayoutBox>
     </div>
   );
 }

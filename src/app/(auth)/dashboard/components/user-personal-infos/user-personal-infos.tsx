@@ -1,10 +1,9 @@
 "use client";
 
 import { useAuth } from "@/hooks/use-auth";
-import LayoutBox from "../layout-box/layout-box";
 import { useEffect, useState } from "react";
-import { UserProfile, UserStats } from "@/types/user";
-import { getUserProfileWithStories, getUserStats } from "@/lib/api/user";
+import { UserStats } from "@/types/user";
+import { getUserStats } from "@/lib/api/user";
 import { updateUserProfile } from "@/lib/api/user";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
 import ShowEditUserForm from "@/components/ui/forms/show-edit-user-form";
@@ -52,8 +51,6 @@ const StatCard: React.FC<StatCardProps> = ({
 
 export default function UserPersonalInfos() {
   const { user, setUser } = useAuth();
-  const [userCompleteProfile, setUserCompleteProfile] =
-    useState<UserProfile | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -69,22 +66,14 @@ export default function UserPersonalInfos() {
         setLoading(true);
         setError("");
 
-        const { data: statsData, statusCode: statusCode1 } = await getUserStats(
+        const { data: statsData, statusCode: statusCode } = await getUserStats(
           user.username,
         );
-        const { data: userProfile, statusCode: statusCode2 } =
-          await getUserProfileWithStories(user.username);
 
-        if (statusCode1 === 200) {
+        if (statusCode === 200) {
           setUserStats(statsData);
         } else {
           setError("Error loading user stats");
-        }
-
-        if (statusCode2 === 200) {
-          setUserCompleteProfile(userProfile);
-        } else {
-          setError("Error loading user profile");
         }
       } catch (err: any) {
         setError("Unexpected error loading user info");
@@ -103,12 +92,6 @@ export default function UserPersonalInfos() {
 
       const response = await updateUserProfile({ avatarUrl: url });
 
-      if (userCompleteProfile) {
-        setUserCompleteProfile({
-          ...userCompleteProfile,
-          avatarUrl: url,
-        });
-      }
       if (user) {
         setUser({
           ...user,
@@ -132,7 +115,7 @@ export default function UserPersonalInfos() {
     setUpdateError(error);
   };
 
-  if (!userCompleteProfile) {
+  if (!user) {
     return (
       <div className="max-w-6xl mx-auto sx:p-6">
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center">
@@ -153,17 +136,15 @@ export default function UserPersonalInfos() {
   }
 
   return (
-    <LayoutBox>
+    <>
       <div className="max-w-6xl mx-auto sx:p-6 space-y-6">
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
           <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
             <div className="relative group">
               <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white shadow-lg">
                 <img
-                  src={transformLinkImage(
-                    userCompleteProfile.avatarUrl || "/mock-user.jpg",
-                  )}
-                  alt={userCompleteProfile.username}
+                  src={transformLinkImage(user.avatarUrl || "/mock-user.jpg")}
+                  alt={user.username}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -181,14 +162,10 @@ export default function UserPersonalInfos() {
             </div>
 
             <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-bold mb-2">
-                {userCompleteProfile.username}
-              </h1>
-              <p className="text-lg opacity-90 mb-1">
-                @{userCompleteProfile.username}
-              </p>
+              <h1 className="text-3xl font-bold mb-2">{user.username}</h1>
+              <p className="text-lg opacity-90 mb-1">@{user.username}</p>
               <p className="text-base opacity-80 max-w-2xl">
-                {userCompleteProfile.bio || "Nenhuma bio disponível"}
+                {user.bio || "Nenhuma bio disponível"}
               </p>
             </div>
           </div>
@@ -290,10 +267,7 @@ export default function UserPersonalInfos() {
           </div>
 
           <div className="sx:p-8 p-4">
-            <ShowEditUserForm
-              enabled={editEnabled}
-              userProfile={userCompleteProfile}
-            />
+            <ShowEditUserForm enabled={editEnabled} userProfile={user} />
           </div>
         </div>
       </div>
@@ -301,10 +275,10 @@ export default function UserPersonalInfos() {
       <ImageEditModal
         isOpen={isImageModalOpen}
         onClose={() => setIsImageModalOpen(false)}
-        currentImageUrl={userCompleteProfile.avatarUrl || undefined}
+        currentImageUrl={user.avatarUrl || undefined}
         onUploadSuccess={handleImageUploadSuccess}
         onUploadError={handleImageUploadError}
       />
-    </LayoutBox>
+    </>
   );
 }

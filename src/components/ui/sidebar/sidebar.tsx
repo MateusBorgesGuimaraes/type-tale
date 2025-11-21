@@ -1,14 +1,13 @@
 "use client";
 
 import {
-  ChevronsRight,
-  Settings,
-  FileText,
-  HomeIcon,
   NotebookPenIcon,
   FileSlidersIcon,
   HighlighterIcon,
   NewspaperIcon,
+  UserRoundCogIcon,
+  LibraryBigIcon,
+  ChevronsRightIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
@@ -36,15 +35,18 @@ export default function Sidebar() {
   ];
 
   const publicRoutes = [
-    { icon: HomeIcon, label: "Home", href: "/dashboard" },
-    { icon: NotebookPenIcon, label: "New Story", href: "/dashboard/new-story" },
+    { icon: UserRoundCogIcon, label: "User", href: "/dashboard" },
+    {
+      icon: LibraryBigIcon,
+      label: "My stories",
+      href: "/dashboard/my-stories",
+    },
     {
       icon: FileSlidersIcon,
       label: "Manage stories",
       href: "/dashboard/manage-stories",
     },
-    { icon: FileText, label: "Relatórios", href: "/dashboard/reports" },
-    { icon: Settings, label: "Configurações", href: "/dashboard/settings" },
+    { icon: NotebookPenIcon, label: "New Story", href: "/dashboard/new-story" },
   ];
 
   const userPermissions =
@@ -62,7 +64,7 @@ export default function Sidebar() {
           absolute left-0 top-0 h-full
           bg-gray-50 dark:bg-gray-900
           border-r border-gray-200 dark:border-gray-700
-          dark:rounded-br-xl
+
           transition-all duration-300
           ${isOpen ? "w-[260px]" : "w-[68px]"}
         `}
@@ -80,11 +82,11 @@ export default function Sidebar() {
             </div>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`text-gray-600 hover:text-cyan-600 dark:text-gray-400 dark:hover:text-cyan-400 transition-transform duration-300 ${
+              className={`text-gray-600 hover:text-cyan-600 dark:text-gray-400 dark:hover:text-cyan-400 transition-transform duration-300 cursor-pointer ${
                 isOpen ? "" : "rotate-180"
               }`}
             >
-              <ChevronsRight className="w-6 h-6" />
+              <ChevronsRightIcon className="w-6 h-6" />
             </button>
           </div>
 
@@ -132,7 +134,6 @@ export default function Sidebar() {
           border-t border-gray-200 dark:border-gray-700
           px-2 py-2
           flex justify-around
-          shadow-lg
           z-50
         "
       >

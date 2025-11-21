@@ -6,6 +6,7 @@ import {
   StorySearchParams,
   StorySearchParamsFull,
   StorySearchResult,
+  StoryWithoutAuthor,
 } from "@/types/stories";
 import { apiFetch } from "./client";
 import { buildQueryString } from "../utils/build-query-string";
@@ -28,6 +29,10 @@ export async function getRamdomStories(limit = 12) {
       tags: ["stories-random"],
     },
   });
+}
+
+export async function getAllMyStories() {
+  return apiFetch<StoryWithoutAuthor[]>(`/stories/me`);
 }
 
 export async function getRecentlyUpdatedtSories(limit = 6) {
