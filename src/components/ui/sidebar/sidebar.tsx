@@ -94,7 +94,10 @@ export default function Sidebar() {
             <ul className="space-y-2">
               {userPermissions.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.href;
+                const isActive =
+                  item.href === "/dashboard"
+                    ? pathname === "/dashboard"
+                    : pathname.startsWith(item.href);
 
                 return (
                   <li key={item.href}>

@@ -1,16 +1,16 @@
-type StatsCardChapterProps = {
+type StatsCardProps = {
   icon: React.ElementType;
   label: string;
   value: number;
   color: string;
 };
 
-export default function StatsCardChapter({
+export default function StatsCard({
   icon: Icon,
   label,
   value,
   color,
-}: StatsCardChapterProps) {
+}: StatsCardProps) {
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl p-5 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <div className="flex items-center gap-4">

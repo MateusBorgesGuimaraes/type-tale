@@ -42,7 +42,7 @@ export default function ManageStories({ stories }: ManageStoriesProps) {
       render: (_: unknown, item: StoryWithoutAuthor) => (
         <div className="flex items-center gap-2">
           <Link
-            href={`/story/${item.slug}`}
+            href={`/dashboard/manage-stories/details/${item.slug}`}
             className="px-3 py-1 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded transition"
           >
             Details

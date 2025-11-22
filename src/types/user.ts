@@ -23,7 +23,7 @@ export type SimpleAuthor = {
 
 export type Author = {
   id: string;
-  userame: string;
+  username: string;
   email: string;
   avatarUrl: string | null;
 };

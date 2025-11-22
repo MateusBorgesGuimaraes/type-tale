@@ -11,6 +11,15 @@ export async function getChaptersByStoryIdOrSlug(param: string) {
   });
 }
 
+export async function getChaptersByStoryIdOrSlugPrivate(param: string) {
+  return apiFetch<StoryChapters>(`/chapters/stories/${param}/author`, {
+    next: {
+      revalidate: isDev ? 0 : 180,
+      tags: [`stories-${param}-chapters-author`],
+    },
+  });
+}
+
 export async function getChapterByIdOrSlug(param: string) {
   return apiFetch<ChapterWithNavigation>(`/chapters/${param}`, {
     next: {

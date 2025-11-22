@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { EyeIcon, HashIcon, StarIcon, UsersIcon } from "lucide-react";
-import StatsCardChapter from "../stats-card-chapter/stats-card-chapter";
 import Link from "next/link";
 import { StoryWithoutAuthor } from "@/types/stories";
 import GenericSelect from "@/components/ui/generic-select/generic-select";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
+import StatsCard from "../../../components/stats-card/stats-card";
 
 type UserStoriesProps = {
   stories: StoryWithoutAuthor[];
@@ -85,7 +85,7 @@ export default function UserStories({ stories }: UserStoriesProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6 pt-5">
         <div className="w-full">
-          <StatsCardChapter
+          <StatsCard
             icon={HashIcon}
             label="Chapters"
             value={selectedStory.chaptersCount || 0}
@@ -93,7 +93,7 @@ export default function UserStories({ stories }: UserStoriesProps) {
           />
         </div>
         <div className="w-full">
-          <StatsCardChapter
+          <StatsCard
             icon={EyeIcon}
             label="Views"
             value={selectedStory.viewsCount || 0}
@@ -101,7 +101,7 @@ export default function UserStories({ stories }: UserStoriesProps) {
           />
         </div>
         <div className="w-full">
-          <StatsCardChapter
+          <StatsCard
             icon={UsersIcon}
             label="Followers"
             value={selectedStory.followersCount || 0}
@@ -109,7 +109,7 @@ export default function UserStories({ stories }: UserStoriesProps) {
           />
         </div>
         <div className="w-full">
-          <StatsCardChapter
+          <StatsCard
             icon={StarIcon}
             label="Rating Count"
             value={selectedStory.ratingCount || 0}

@@ -1,6 +1,7 @@
 import { getAllMyStories } from "@/lib/api/stories";
-import LayoutBox from "../components/layout-box/layout-box";
+
 import ManageStories from "./components/manage-stories/manage-stories";
+import LayoutBox from "@/components/ui/layout-box/layout-box";
 
 export default async function ManageStoriesPage() {
   const { data: stories } = await getAllMyStories();

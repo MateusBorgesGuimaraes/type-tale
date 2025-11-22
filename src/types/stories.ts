@@ -15,6 +15,7 @@ export type Story = {
   synopsis: string;
   chaptersCount: number;
   publishedChaptersCount: number;
+  unpublishedChaptersCount: number;
   viewsCount: number;
   followersCount: number;
   status: StoryStatus;
@@ -31,7 +32,12 @@ export type StoryWithoutAuthor = Omit<Story, "author">;
 
 export type StoryCleanner = Pick<
   Story,
-  "id" | "title" | "slug" | "chaptersCount"
+  | "id"
+  | "title"
+  | "slug"
+  | "chaptersCount"
+  | "publishedChaptersCount"
+  | "unpublishedChaptersCount"
 >;
 
 export type StoryRecommendation = Pick<
