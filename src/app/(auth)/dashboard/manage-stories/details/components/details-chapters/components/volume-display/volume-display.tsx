@@ -1,17 +1,26 @@
+"use client";
+
 import TinyButton from "@/components/ui/tiny-button/tiny-button";
 import { VolumeWithChapters } from "@/types/volume";
 import { formatDateBR } from "@/utils/format-date-br";
 import { CirclePlusIcon } from "lucide-react";
 import Link from "next/link";
 import CustomCheckbox from "@/components/ui/custom-checkbox/custom-checkbox";
+import { useState } from "react";
+import Modal from "@/components/ui/modal/modal";
+import UpdateVolumeForm from "@/components/ui/forms/update-volume-form";
 
 type VolumeDisplayProps = {
   volumeAndChapter: VolumeWithChapters[];
+  storyId: string;
 };
 
 export default function VolumeDisplay({
   volumeAndChapter,
+  storyId,
 }: VolumeDisplayProps) {
+  const [editingVolumeId, setEditingVolumeId] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const formatVolumeNumber = (index: number) => {
     return String(index + 1).padStart(3, "0");
   };
@@ -34,9 +43,14 @@ export default function VolumeDisplay({
                 <span className="hidden sm:inline">NEW CHAPTER</span>
                 <span className="sm:hidden">NEW</span>
               </TinyButton>
-              <TinyButton className="bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm flex-1 sm:flex-initial">
-                EDIT
-              </TinyButton>
+              <div>
+                <TinyButton
+                  onClick={() => setEditingVolumeId(volume.volume.id)}
+                  className="bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm flex-1 sm:flex-initial"
+                >
+                  EDIT
+                </TinyButton>
+              </div>
             </div>
           </div>
           <ul className="border-gray-300">
@@ -90,6 +104,27 @@ export default function VolumeDisplay({
           </ul>
         </div>
       ))}
+      <Modal
+        isOpen={editingVolumeId !== null}
+        onClose={() => setEditingVolumeId(null)}
+        title="Edit Volume"
+        subtitle={`Update the volume ${
+          volumeAndChapter.find((v) => v.volume.id === editingVolumeId)?.volume
+            .title || ""
+        }`}
+        size="xl"
+      >
+        {editingVolumeId && (
+          <UpdateVolumeForm
+            volume={
+              volumeAndChapter.find((v) => v.volume.id === editingVolumeId)!
+                .volume
+            }
+            setIsOpenAction={() => setEditingVolumeId(null)}
+            storyId={storyId}
+          />
+        )}
+      </Modal>
     </>
   );
 }

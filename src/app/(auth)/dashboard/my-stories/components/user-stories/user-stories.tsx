@@ -61,7 +61,7 @@ export default function UserStories({ stories }: UserStoriesProps) {
                 New Chapter
               </Link>
               <Link
-                href={`/stories/${selectedStory.slug}`}
+                href={`/dashboard/manage-stories/details/${selectedStory.slug}`}
                 className="text-base py-2 px-6 uppercase cursor-pointer rounded-lg font-medium transition border border-gray-500 text-gray-500 hover:opacity-85 inline-block text-center"
               >
                 Details
