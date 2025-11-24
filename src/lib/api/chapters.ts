@@ -1,5 +1,6 @@
-import { ChapterWithNavigation, StoryChapters } from "@/types/chapter";
+import { Chapter, ChapterWithNavigation, StoryChapters } from "@/types/chapter";
 import { apiFetch } from "./client";
+import { ChapterSchema } from "@/schemas/chapter";
 const isDev = process.env.NODE_ENV === "development";
 
 export async function getChaptersByStoryIdOrSlug(param: string) {
@@ -26,5 +27,12 @@ export async function getChapterByIdOrSlug(param: string) {
       revalidate: isDev ? 0 : 1400,
       tags: [`chapter-${param}`],
     },
+  });
+}
+
+export async function createChapter(volumeId: string, data: ChapterSchema) {
+  return apiFetch<Chapter>(`/chapters/volumes/${volumeId}`, {
+    method: "POST",
+    body: JSON.stringify(data),
   });
 }

@@ -49,7 +49,7 @@ export default function ChapterForm({ volumeId }: ChapterFormProps) {
 
   return (
     <>
-      <div className="max-w-[664px] w-full">
+      <div className="max-w-[1100px] w-full">
         <h1 className="text-gray-800 flex gap-3 items-center mb-6">
           <ScrollTextIcon /> <p className="font-semibold">CREATE CHAPTER</p>
         </h1>
@@ -77,8 +77,8 @@ export default function ChapterForm({ volumeId }: ChapterFormProps) {
                   { value: "true", label: "Draft" },
                   { value: "false", label: "Published" },
                 ]}
-                value={String(field.value)}
-                onChange={field.onChange} // Simplifique aqui
+                value={String(isDraftValue)}
+                onChange={field.onChange}
                 orientation="horizontal"
                 errorMessage={errors.isDraft?.message}
                 name="isDraft"
@@ -94,7 +94,7 @@ export default function ChapterForm({ volumeId }: ChapterFormProps) {
               <CustomEditor
                 label="CONTENT"
                 required
-                value={field.value}
+                value={contentValue}
                 onChange={field.onChange}
                 errorMessage={errors.content?.message}
                 disabled={isLoading}

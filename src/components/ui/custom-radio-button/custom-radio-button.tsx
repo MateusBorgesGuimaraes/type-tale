@@ -11,7 +11,6 @@ type CustomRadioGroupProps = {
   required?: boolean;
   options: readonly Option[] | Option[];
   orientation?: "horizontal" | "vertical";
-  // Adicione esta prop para aceitar boolean
   valueAsBoolean?: boolean;
 };
 
@@ -28,14 +27,12 @@ export function CustomRadioGroup({
   ...rest
 }: CustomRadioGroupProps &
   Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">) {
-  // Converte o valor para string se for boolean
   const controlledValue = valueAsBoolean ? String(value ?? "") : (value ?? "");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!onChange) return;
 
     if (valueAsBoolean) {
-      // Converte string para boolean e chama onChange diretamente
       const boolValue = e.target.value === "true";
       onChange(boolValue as any);
     } else {
