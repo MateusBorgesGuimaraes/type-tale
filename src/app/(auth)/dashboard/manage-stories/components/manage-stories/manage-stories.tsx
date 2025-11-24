@@ -48,7 +48,7 @@ export default function ManageStories({ stories }: ManageStoriesProps) {
             Details
           </Link>
           <Link
-            href={`/manage/story/${item.slug}/config`}
+            href={`/dashboard/manage-stories/config/${item.slug}`}
             className="px-3 py-1 text-sm bg-green-600 hover:bg-green-700 text-white rounded transition"
           >
             Config

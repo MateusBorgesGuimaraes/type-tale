@@ -12,7 +12,6 @@ export async function uploadImage(file: File, type: ImageType) {
 
   return apiFetchClient<UploadResponse>(`/upload/${type}`, {
     method: "POST",
-    headers: {},
     body: formData,
   });
 }

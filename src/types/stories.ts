@@ -7,6 +7,14 @@ export enum StoryStatus {
   COMPLETED = "COMPLETED",
 }
 
+export enum StoryLanguage {
+  english = "english",
+  portuguese = "portuguese",
+  spanish = "spanish",
+  japanese = "japanese",
+  korean = "korean",
+}
+
 export type Story = {
   id: string;
   title: string;
@@ -21,6 +29,7 @@ export type Story = {
   status: StoryStatus;
   storyType: string;
   mainGenre: string;
+  language: StoryLanguage;
   tags: string[];
   ratingAvg: number | null;
   ratingCount: number;

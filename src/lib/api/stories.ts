@@ -3,13 +3,13 @@ import {
   StoriesRanks,
   Story,
   StoryRecommendation,
-  StorySearchParams,
   StorySearchParamsFull,
   StorySearchResult,
   StoryWithoutAuthor,
 } from "@/types/stories";
 import { apiFetch } from "./client";
 import { buildQueryString } from "../utils/build-query-string";
+import { StorySchema, UpdateStorySchema } from "@/schemas/story";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -73,5 +73,19 @@ export async function getStories(params: StorySearchParamsFull = {}) {
       revalidate: isDev ? 0 : 300,
       tags: ["stories-list"],
     },
+  });
+}
+
+export async function createStory(data: StorySchema) {
+  return apiFetch<Story>(`/stories`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateStory(storyId: string, data: UpdateStorySchema) {
+  return apiFetch(`/stories/${storyId}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
   });
 }

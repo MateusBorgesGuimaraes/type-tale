@@ -85,6 +85,7 @@ export default function ImageUpload({
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
       const errorMsg = err.message || "Error uploading image.";
+
       setError(errorMsg);
       setPreview(currentImageUrl || null);
       setSelectedFile(null);
@@ -111,7 +112,7 @@ export default function ImageUpload({
       case "banner":
         return "w-full h-48 rounded-xl";
       case "cover":
-        return "w-64 h-96 rounded-xl mx-auto";
+        return "sm:w-64 sm:h-96 w-48 h-72 rounded-xl mx-auto";
       case "announcement":
         return "w-full h-64 rounded-xl";
       default:
@@ -125,7 +126,7 @@ export default function ImageUpload({
     <div className={`space-y-4 ${className}`}>
       <div className="relative">
         {preview ? (
-          <div className="space-y-3">
+          <div className="space-y-3 ">
             <div
               className={`relative ${getImageDimensions()} overflow-hidden border-2 ${hasChanges ? "border-blue-400 dark:border-blue-500" : "border-gray-200 dark:border-gray-700"} shadow-lg group`}
             >

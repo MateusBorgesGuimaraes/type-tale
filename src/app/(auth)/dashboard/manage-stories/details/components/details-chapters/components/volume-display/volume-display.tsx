@@ -38,11 +38,14 @@ export default function VolumeDisplay({
               VOLUME {formatVolumeNumber(index)} - {volume.volume.title}
             </h2>
             <div className="flex gap-3 sm:gap-6 w-full sm:w-auto">
-              <TinyButton className="bg-green-600 hover:bg-green-500 text-xs sm:text-sm flex-1 sm:flex-initial">
+              <Link
+                href={`/dashboard/manage-stories/new-chapter/${volume.volume.id}`}
+                className="text-white font-semibold py-1 px-3 rounded-sm cursor-pointer flex items-center gap-1.5 bg-green-600 hover:bg-green-500 text-xs sm:text-sm flex-1 sm:flex-initial"
+              >
                 <CirclePlusIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span className="hidden sm:inline">NEW CHAPTER</span>
                 <span className="sm:hidden">NEW</span>
-              </TinyButton>
+              </Link>
               <div>
                 <TinyButton
                   onClick={() => setEditingVolumeId(volume.volume.id)}

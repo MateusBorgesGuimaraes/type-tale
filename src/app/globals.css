@@ -98,3 +98,167 @@ html.dark body {
   margin-left: calc(50% - 50vw - 7.05px);
   margin-right: calc(50% - 50vw - 7px);
 }
+
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p {
+  margin: 0.75em 0;
+}
+
+.ProseMirror h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 1em 0 0.5em 0;
+  line-height: 1.2;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.83em 0 0.5em 0;
+  line-height: 1.3;
+}
+
+.ProseMirror h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 0.67em 0 0.5em 0;
+  line-height: 1.4;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5em;
+  margin: 0.75em 0;
+}
+
+.ProseMirror li {
+  margin: 0.25em 0;
+}
+
+/* Blockquote */
+.ProseMirror blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+  color: #6b7280;
+}
+
+.dark .ProseMirror blockquote {
+  border-left-color: #4b5563;
+  color: #9ca3af;
+}
+
+/* Horizontal Rule */
+.ProseMirror hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 2em 0;
+}
+
+.dark .ProseMirror hr {
+  border-top-color: #4b5563;
+}
+
+/* Highlight */
+.ProseMirror mark {
+  background-color: #fef08a;
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+}
+
+.dark .ProseMirror mark {
+  background-color: #713f12;
+  color: #fef08a;
+}
+
+/* Strikethrough */
+.ProseMirror s {
+  text-decoration: line-through;
+}
+
+/* Code inline */
+.ProseMirror code {
+  background-color: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.dark .ProseMirror code {
+  background-color: #374151;
+}
+
+/* Estilos para tabelas */
+.ProseMirror table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 1em 0;
+  overflow: hidden;
+}
+
+.ProseMirror td,
+.ProseMirror th {
+  min-width: 1em;
+  border: 2px solid #ddd;
+  padding: 0.5em;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.ProseMirror th {
+  font-weight: bold;
+  text-align: left;
+  background-color: #f3f4f6;
+}
+
+.ProseMirror .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(59, 130, 246, 0.1);
+  pointer-events: none;
+}
+
+/* Dark mode para tabelas */
+.dark .ProseMirror th {
+  background-color: #374151;
+}
+
+.dark .ProseMirror td,
+.dark .ProseMirror th {
+  border-color: #4b5563;
+}
+
+/* Placeholder */
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Foco no editor */
+.ProseMirror:focus {
+  outline: none;
+}
+
+/* Seleção de texto */
+.ProseMirror ::selection {
+  background-color: rgba(59, 130, 246, 0.2);
+}
+
+.dark .ProseMirror ::selection {
+  background-color: rgba(96, 165, 250, 0.3);
+}
