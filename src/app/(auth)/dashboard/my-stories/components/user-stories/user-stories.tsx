@@ -55,16 +55,16 @@ export default function UserStories({ stories }: UserStoriesProps) {
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href={`/stories/${selectedStory.slug}/new-chapter`}
+                href={`/dashboard/manage-stories/details/${selectedStory.slug}`}
                 className="uppercase cursor-pointer rounded-lg font-medium transition bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg disabled:opacity-50 text-base py-2 px-6 inline-block text-center"
               >
                 New Chapter
               </Link>
               <Link
-                href={`/dashboard/manage-stories/details/${selectedStory.slug}`}
+                href={`/dashboard/manage-stories/config/${selectedStory.slug}`}
                 className="text-base py-2 px-6 uppercase cursor-pointer rounded-lg font-medium transition border border-gray-500 text-gray-500 hover:opacity-85 inline-block text-center"
               >
-                Details
+                EDIT STORY
               </Link>
             </div>
           </div>

@@ -97,9 +97,12 @@ export default function VolumeDisplay({
                         ? formatDateBR(chapter.publishedAt)
                         : "DRAFT"}
                     </span>
-                    <TinyButton className="bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm order-1 sm:order-2">
+                    <Link
+                      href={`/dashboard/manage-stories/edit-chapter/${chapter.id}`}
+                      className="text-white font-semibold py-1 px-3 rounded-sm cursor-pointer flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm order-1 sm:order-2"
+                    >
                       EDIT
-                    </TinyButton>
+                    </Link>
                   </div>
                 </li>
               ))

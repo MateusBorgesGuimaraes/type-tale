@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import CustomTextarea from "../custom-textarea/custom-textarea";
 import { ButtonForm } from "../button-form/button-form";
 
 import { ScrollTextIcon } from "lucide-react";
@@ -12,13 +11,14 @@ import CustomInput from "../custom-input/custom-input";
 import { CustomRadioGroup } from "../custom-radio-button/custom-radio-button";
 import { chapterSchema, ChapterSchema } from "@/schemas/chapter";
 import { CustomEditor } from "../custom-editor/custom-editor";
-import { createChapter } from "@/lib/api/chapters";
+import { getChapterByIdOrSlug, updateChapter } from "@/lib/api/chapters";
+import { Chapter } from "@/types/chapter";
 
 type ChapterFormProps = {
-  volumeId: string;
+  chapter: Chapter;
 };
 
-export default function ChapterForm({ volumeId }: ChapterFormProps) {
+export default function EditChapterForm({ chapter }: ChapterFormProps) {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,9 +33,9 @@ export default function ChapterForm({ volumeId }: ChapterFormProps) {
   } = useForm<ChapterSchema>({
     resolver: zodResolver(chapterSchema),
     defaultValues: {
-      title: "",
-      content: "",
-      isDraft: false,
+      title: chapter.title,
+      content: chapter.content,
+      isDraft: chapter.isDraft,
     },
   });
 
@@ -45,28 +45,28 @@ export default function ChapterForm({ volumeId }: ChapterFormProps) {
 
   const onSubmit = async (data: ChapterSchema) => {
     if (!user) {
-      toast.error("You need to be logged in to create a chapter.");
+      toast.error("You need to be logged in to edit a chapter.");
       return;
     }
 
     try {
       setIsLoading(true);
 
-      const result = await createChapter(volumeId, data);
+      const result = await updateChapter(chapter.id, data);
 
       if (result.statusCode !== 201) {
-        const errorMsg = result.message || "Error when creating your chapter.";
+        const errorMsg = result.message || "Error when updated your chapter.";
         toast.error(errorMsg);
         return;
       }
 
-      toast.success(result.message || "Chapter successfully created!");
+      toast.success(result.message || "Chapter successfully updated!");
       reset();
     } catch (error: any) {
       const errorMsg =
         error?.response?.data?.message ||
         error?.message ||
-        "Unexpected error while creating chapter.";
+        "Unexpected error while updated chapter.";
       toast.error(errorMsg);
     } finally {
       setIsLoading(false);
@@ -77,7 +77,7 @@ export default function ChapterForm({ volumeId }: ChapterFormProps) {
     <>
       <div className="max-w-[1100px] w-full">
         <h1 className="text-gray-800 flex gap-3 items-center mb-6">
-          <ScrollTextIcon /> <p className="font-semibold">CREATE CHAPTER</p>
+          <ScrollTextIcon /> <p className="font-semibold">UPDATED CHAPTER</p>
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
           <CustomInput
@@ -131,7 +131,7 @@ export default function ChapterForm({ volumeId }: ChapterFormProps) {
 
           <div className="flex gap-2 justify-end">
             <ButtonForm disabled={isLoading} sizes="sm" type="submit">
-              {isLoading ? "CREATING..." : "CREATE"}
+              {isLoading ? "SAVING..." : "SAVE CHANGES"}
             </ButtonForm>
           </div>
         </form>
