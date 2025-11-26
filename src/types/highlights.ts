@@ -5,5 +5,14 @@ export type HighlightWithAuthor = {
   title: string;
   banner: string;
   link: string;
-  authot: SimpleAuthor;
+  author: SimpleAuthor;
+};
+
+export type HighlightWithAuthorComplete = {
+  id: string;
+  title: string;
+  banner: string;
+  link: string;
+  isActive: boolean;
+  author: SimpleAuthor;
 };

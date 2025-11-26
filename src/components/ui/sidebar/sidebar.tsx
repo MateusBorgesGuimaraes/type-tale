@@ -51,7 +51,7 @@ export default function Sidebar() {
 
   const userPermissions =
     user.role === "publisher"
-      ? [...privateRoutes, ...publicRoutes]
+      ? [...publicRoutes, ...privateRoutes]
       : publicRoutes;
 
   return (
