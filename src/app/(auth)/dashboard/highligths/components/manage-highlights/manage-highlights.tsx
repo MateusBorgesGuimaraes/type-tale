@@ -10,6 +10,9 @@ import { HighlightWithAuthorComplete } from "@/types/highlights";
 import LinkButtonCustom from "@/components/ui/link-buttons/link-button-custom";
 import { ArrowUpDown } from "lucide-react";
 import { CirclePlusIcon } from "lucide-react";
+import { toggleHighlightStatus } from "@/lib/api/highlights";
+import { toast } from "sonner";
+import { revalidateHighlights } from "@/actions/highlights";
 
 type ManageHighlightsProps = {
   highlights: HighlightWithAuthorComplete[];
@@ -93,7 +96,7 @@ export default function ManageHighlights({
       render: (_, item) => (
         <CustomCheckbox
           checked={item.isActive}
-          onChangeAction={() => handleToggleActive(item.id, item.isActive)}
+          onChangeAction={() => handleToggleActive(item.id)}
         />
       ),
     },
@@ -102,7 +105,7 @@ export default function ManageHighlights({
       label: "ACTIONS",
       render: (_, item) => (
         <Link
-          href={`/dashboard/manage-highlights/edit/${item.id}`}
+          href={`/dashboard/highligths/update/${item.id}`}
           className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm transition"
         >
           Edit
@@ -129,7 +132,10 @@ export default function ManageHighlights({
           </select>
         </div>
 
-        <LinkButtonCustom className="bg-green-600 sx:text-sm text-sm" link="/">
+        <LinkButtonCustom
+          className="bg-green-600 sx:text-sm text-sm"
+          link="/dashboard/highligths/create"
+        >
           <CirclePlusIcon className="w-5 h-5" /> NEW HIGHLIGHT
         </LinkButtonCustom>
       </div>
@@ -143,7 +149,22 @@ export default function ManageHighlights({
   );
 }
 
-async function handleToggleActive(id: string, current: boolean) {
-  console.log("id", id);
-  console.log("current", current);
+async function handleToggleActive(id: string) {
+  try {
+    const result = await toggleHighlightStatus(id);
+    if (result.statusCode !== 200) {
+      const errorMsg =
+        result.message || "Error when toggle your highligth status.";
+      toast.error(errorMsg);
+      return;
+    }
+    await revalidateHighlights();
+    toast.success(result.message || "Highligth successfully updateded!");
+  } catch (error: any) {
+    const errorMsg =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Unexpected error while updating your highligth.";
+    toast.error(errorMsg);
+  }
 }

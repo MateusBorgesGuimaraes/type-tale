@@ -14,8 +14,9 @@ import { GENRES, LANGUAGES, STATUS_OPTIONS, STORY_TYPE } from "@/types/stories";
 import { CustomRadioGroup } from "../custom-radio-button/custom-radio-button";
 import { CustomSelect } from "../custom-select/custom-select";
 import { CustomTagsInput } from "../custom-tags-input/custom-tags-input";
-import StoryCoverEditModal from "../story-cover-edit-modal/story-cover-edit-modal";
+import StoryCoverEditModal from "../general-image-edit-modal/general-image-edit-modal";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
+import GeneralImageEditModal from "../general-image-edit-modal/general-image-edit-modal";
 
 export default function StoryForm() {
   const { user } = useAuth();
@@ -234,7 +235,10 @@ export default function StoryForm() {
         </form>
       </div>
 
-      <StoryCoverEditModal
+      <GeneralImageEditModal
+        title="Story Cover"
+        subtitle="Upload the cover image for your story"
+        type="cover"
         isOpen={isCoverModalOpen}
         onClose={() => setIsCoverModalOpen(false)}
         currentImageUrl={coverUrlValue || undefined}

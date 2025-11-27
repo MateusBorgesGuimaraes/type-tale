@@ -3,6 +3,7 @@ import {
   HighlightWithAuthorComplete,
 } from "@/types/highlights";
 import { apiFetch } from "./client";
+import { HighligthSchema, UpdateHighligthSchema } from "@/schemas/highligth";
 
 export async function getHighlightsAndAthors() {
   return apiFetch<HighlightWithAuthor[]>("/highlights/active", {
@@ -25,4 +26,31 @@ export async function getHighlightsAndAthorsPaginated(page = 1, limit = 2) {
       },
     },
   );
+}
+
+export async function getOneHighligthById(id: string) {
+  return apiFetch<HighlightWithAuthorComplete>(`/highlights/${id}`);
+}
+
+export async function createHighligth(data: HighligthSchema) {
+  return apiFetch<HighlightWithAuthorComplete>(`/highlights`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateHighlight(
+  highlightId: string,
+  data: UpdateHighligthSchema,
+) {
+  return apiFetch(`/highlights/${highlightId}`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function toggleHighlightStatus(highlightId: string) {
+  return apiFetch(`/highlights/${highlightId}/toggle`, {
+    method: "PATCH",
+  });
 }

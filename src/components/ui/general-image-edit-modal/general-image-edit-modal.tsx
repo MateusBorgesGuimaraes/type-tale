@@ -4,30 +4,31 @@ import ImageUpload from "@/components/ui/image-upload/image-upload";
 import Modal from "@/components/ui/modal/modal";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
 
-interface StoryCoverEditModalProps {
+interface GeneralImageEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   currentImageUrl?: string;
   onUploadSuccess: (url: string) => void;
   onUploadError?: (error: string) => void;
+  title: string;
+  subtitle: string;
+  type: "announcement" | "banner" | "cover" | "avatar";
 }
 
-export default function StoryCoverEditModal({
+export default function GeneralImageEditModal({
   isOpen,
   onClose,
   currentImageUrl,
   onUploadSuccess,
   onUploadError,
-}: StoryCoverEditModalProps) {
+  title,
+  subtitle,
+  type,
+}: GeneralImageEditModalProps) {
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Story Cover"
-      subtitle="Upload the cover image for your story"
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title={type} subtitle={subtitle}>
       <ImageUpload
-        type="cover"
+        type={type}
         currentImageUrl={
           currentImageUrl ? transformLinkImage(currentImageUrl) : undefined
         }

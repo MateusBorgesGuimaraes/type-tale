@@ -11,7 +11,7 @@ export default async function HighlightsPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams;
 
   const page = Number(resolvedSearchParams.page) || 1;
-  const limit = Number(resolvedSearchParams.limit) || 4;
+  const limit = Number(resolvedSearchParams.limit) || 5;
 
   let highlightsResponse = null;
 
