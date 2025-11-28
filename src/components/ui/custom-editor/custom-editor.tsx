@@ -65,8 +65,13 @@ export const CustomEditor = forwardRef<any, CustomEditorProps>(
           heading: {
             levels: [1, 2, 3],
           },
+          underline: false,
         }),
-        Underline,
+        Underline.configure({
+          HTMLAttributes: {
+            class: "underline",
+          },
+        }),
         Highlight.configure({
           multicolor: false,
         }),

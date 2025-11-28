@@ -6,7 +6,7 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default async function CreateHighlightPage({ params }: PageProps) {
+export default async function UpdateHighlightPage({ params }: PageProps) {
   const { id } = await params;
 
   const { data: highlightData } = await getOneHighligthById(id);

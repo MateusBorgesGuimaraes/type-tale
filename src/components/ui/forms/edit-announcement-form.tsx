@@ -3,31 +3,32 @@
 import { useAuth } from "@/hooks/use-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { ButtonForm } from "../button-form/button-form";
 import { ImageIcon, TvMinimalIcon } from "lucide-react";
 import CustomInput from "../custom-input/custom-input";
 import { transformLinkImage } from "@/lib/utils/transform-link-image";
-import {
-  updateHighligthSchema,
-  UpdateHighligthSchema,
-} from "@/schemas/highligth";
-import { updateHighlight } from "@/lib/api/highlights";
 import GeneralImageEditModal from "../general-image-edit-modal/general-image-edit-modal";
-import { revalidateHighlights } from "@/actions/highlights";
-import { HighlightWithAuthorComplete } from "@/types/highlights";
+import {
+  updateAnnouncementSchema,
+  UpdateAnnouncementSchema,
+} from "@/schemas/annoucement";
+import { updateAnnouncement } from "@/lib/api/annoucements";
+import { revalidateAnnouncements } from "@/actions/announcements";
+import { CustomEditor } from "../custom-editor/custom-editor";
+import { AnnouncementComplete } from "@/types/annoucements";
 
-type EditHighligthFormProps = {
-  highligth: HighlightWithAuthorComplete;
+type EditAnnouncementFormProps = {
+  announcement: AnnouncementComplete;
 };
 
-export default function EditHighligthForm({
-  highligth,
-}: EditHighligthFormProps) {
+export default function EditAnnouncementForm({
+  announcement,
+}: EditAnnouncementFormProps) {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [isCoverModalOpen, setIsCoverModalOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const {
@@ -36,71 +37,71 @@ export default function EditHighligthForm({
     formState: { errors },
     watch,
     reset,
+    control,
     setValue,
-  } = useForm<UpdateHighligthSchema>({
-    resolver: zodResolver(updateHighligthSchema),
+  } = useForm<UpdateAnnouncementSchema>({
+    resolver: zodResolver(updateAnnouncementSchema),
     defaultValues: {
-      title: highligth.title,
-      banner: highligth.banner,
-      link: highligth.link,
-      isActive: highligth.isActive,
+      title: announcement.title,
+      image: announcement.image,
+      content: announcement.content,
+      isActive: announcement.isActive,
     },
   });
 
   const titleValue = watch("title");
-  const bannerValue = watch("banner");
-  const linkValue = watch("link");
+  const imageValue = watch("image");
+  const contentValue = watch("content");
   const isActiveValue = watch("isActive");
 
-  const handleBannerUploadSuccess = async (url: string) => {
+  const handleImageUploadSuccess = async (url: string) => {
     try {
       setUploadError(null);
-      setValue("banner", url);
+      setValue("image", url);
 
-      toast.success("Banner uploaded successfully!");
+      toast.success("Image uploaded successfully!");
 
       setTimeout(() => {
-        setIsCoverModalOpen(false);
+        setIsImageModalOpen(false);
       }, 1500);
     } catch (err: any) {
-      const errorMsg = err.message || "Error uploading banner.";
+      const errorMsg = err.message || "Error uploading iamge.";
       toast.error(errorMsg);
       setUploadError(errorMsg);
     }
   };
 
-  const handleBannerUploadError = (error: string) => {
+  const handleImageUploadError = (error: string) => {
     setUploadError(error);
     toast.error(error);
   };
 
-  const onSubmit = async (data: UpdateHighligthSchema) => {
+  const onSubmit = async (data: UpdateAnnouncementSchema) => {
     if (!user) {
-      toast.error("You need to be logged in to create a highligth.");
+      toast.error("You need to be logged in to create a announcement.");
       return;
     }
 
     try {
       setIsLoading(true);
 
-      const result = await updateHighlight(highligth.id, data);
+      const result = await updateAnnouncement(announcement.id, data);
 
       if (result.statusCode !== 200) {
-        const errorMsg =
-          result.message || "Error when updating your highligth.";
+        const errorMsg = result.message || "Error to update your announcement.";
         toast.error(errorMsg);
         return;
       }
 
-      await revalidateHighlights();
+      await revalidateAnnouncements(announcement.id);
 
-      toast.success(result.message || "Highligth successfully updateded!");
+      toast.success(result.message || "Announcement successfully updated!");
       reset(data);
     } catch (error: any) {
       const errorMsg =
         error?.response?.data?.message ||
         error?.message ||
-        "Unexpected error while updating your highligth.";
+        "Unexpected error while update announcement.";
       toast.error(errorMsg);
     } finally {
       setIsLoading(false);
@@ -109,15 +110,15 @@ export default function EditHighligthForm({
 
   return (
     <>
-      <div className="max-w-[664px] w-full">
+      <div className="max-w-[1100px] w-full">
         <h1 className="text-gray-800 flex gap-3 items-center mb-6">
-          <TvMinimalIcon /> <p className="font-semibold">UPDATE HIGHLIGTH</p>
+          <TvMinimalIcon /> <p className="font-semibold">UPDATE ANNOUNCEMENT</p>
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-1">
           <CustomInput
             {...register("title")}
-            label="HIGHLIGTH TITLE"
+            label="ANNOUNCEMENT TITLE"
             type="text"
             required
             errorMessage={errors.title?.message}
@@ -129,13 +130,13 @@ export default function EditHighligthForm({
 
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              HIGHLIGTH BANNER <span className="text-red-500">*</span>
+              UPDATE IMAGE <span className="text-red-500">*</span>
             </label>
             <div className="flex items-start gap-4 flex-col">
-              {bannerValue && (
+              {imageValue && (
                 <div className="relative w-64 h-36 rounded-lg overflow-hidden border-2 border-gray-300 dark:border-gray-600">
                   <img
-                    src={transformLinkImage(bannerValue)}
+                    src={transformLinkImage(imageValue)}
                     alt="Highligth banner preview"
                     className="w-full h-full object-cover"
                   />
@@ -143,31 +144,35 @@ export default function EditHighligthForm({
               )}
               <button
                 type="button"
-                onClick={() => setIsCoverModalOpen(true)}
+                onClick={() => setIsImageModalOpen(true)}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
                 disabled={isLoading}
               >
                 <ImageIcon size={18} />
-                {bannerValue ? "Change Banner" : "Upload Banner"}
+                {imageValue ? "Change Image" : "Upload Image"}
               </button>
             </div>
-            {errors.banner && (
+            {errors.image && (
               <p className="mt-1 text-sm text-red-500">
-                {errors.banner.message}
+                {errors.image.message}
               </p>
             )}
           </div>
 
-          <CustomInput
-            {...register("link")}
-            label="LINK"
-            type="text"
-            required
-            errorMessage={errors.link?.message}
-            showClearButton={true}
-            value={linkValue}
-            onClear={() => setValue("link", "")}
-            disabled={isLoading}
+          <Controller
+            name="content"
+            control={control}
+            render={({ field }) => (
+              <CustomEditor
+                label="CONTENT"
+                required
+                value={contentValue}
+                onChange={field.onChange}
+                errorMessage={errors.content?.message}
+                disabled={isLoading}
+                placeholder="Write the announcement here... Use the toolbar to format text, add tables for stats, etc."
+              />
+            )}
           />
 
           <div className="flex gap-2 justify-end">
@@ -179,14 +184,14 @@ export default function EditHighligthForm({
       </div>
 
       <GeneralImageEditModal
-        title="Highligth banner"
-        subtitle="Upload the banner image for your highligth"
-        type="banner"
-        isOpen={isCoverModalOpen}
-        onClose={() => setIsCoverModalOpen(false)}
-        currentImageUrl={bannerValue || undefined}
-        onUploadSuccess={handleBannerUploadSuccess}
-        onUploadError={handleBannerUploadError}
+        title="Annoucenment image"
+        subtitle="Upload the image image for your announcement"
+        type="announcement"
+        isOpen={isImageModalOpen}
+        onClose={() => setIsImageModalOpen(false)}
+        currentImageUrl={imageValue || undefined}
+        onUploadSuccess={handleImageUploadSuccess}
+        onUploadError={handleImageUploadError}
       />
     </>
   );

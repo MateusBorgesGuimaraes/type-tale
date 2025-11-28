@@ -8,3 +8,9 @@ export type AnnoucementWithAuthor = {
   publishedAt: Date;
   author: SimpleAuthor;
 };
+
+export type AnnouncementComplete = AnnoucementWithAuthor & {
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};

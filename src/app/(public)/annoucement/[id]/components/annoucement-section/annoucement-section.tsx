@@ -38,13 +38,10 @@ export default function AnnoucementSection({
           <Title>{data.title}</Title>
         </div>
         <div className="text-gray-900 xms:text-xl text-base dark:text-gray-100">
-          {data.content}
-        </div>
-        <div className="text-gray-900 xms:text-xl text-base dark:text-gray-100">
-          {data.content}
-        </div>
-        <div className="text-gray-900 xms:text-xl text-base dark:text-gray-100">
-          {data.content}
+          <div
+            className="chapter-content sx:text-xl text-lg leading-8"
+            dangerouslySetInnerHTML={{ __html: data.content }}
+          />
         </div>
         <div className="text-gray-500 dark:text-gray-400 font-base gap-1 sx:py-12 py-8">
           <p className="flex gap-2">
