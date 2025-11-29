@@ -143,6 +143,7 @@ export default function DetailsChapter({ storyChapters }: DetailsChapterProps) {
 
         <VolumeDisplay
           storyId={storyChapters.story.id}
+          storySlug={storyChapters.story.slug}
           volumeAndChapter={sortedVolumes}
         />
       </div>

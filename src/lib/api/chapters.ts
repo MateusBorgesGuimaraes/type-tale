@@ -46,3 +46,15 @@ export async function updateChapter(
     body: JSON.stringify(data),
   });
 }
+
+export async function toggleChapterIsDraft(chapterId: string) {
+  return apiFetch(`/chapters/${chapterId}/toggle-draft`, {
+    method: "PATCH",
+  });
+}
+
+export async function deleteChapter(chapterId: string) {
+  return apiFetch(`/chapters/${chapterId}`, {
+    method: "DELETE",
+  });
+}

@@ -67,6 +67,7 @@ export type StoryInfos = {
   followersCount: number;
   ratingAvg: number | null;
   ratingCount: number;
+  author: SimpleAuthor;
 };
 
 export type StoriesRanks = {

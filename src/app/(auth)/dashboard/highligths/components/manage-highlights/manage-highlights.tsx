@@ -10,9 +10,10 @@ import { HighlightWithAuthorComplete } from "@/types/highlights";
 import LinkButtonCustom from "@/components/ui/link-buttons/link-button-custom";
 import { ArrowUpDown } from "lucide-react";
 import { CirclePlusIcon } from "lucide-react";
-import { toggleHighlightStatus } from "@/lib/api/highlights";
+import { deleteHighlight, toggleHighlightStatus } from "@/lib/api/highlights";
 import { toast } from "sonner";
 import { revalidateHighlights } from "@/actions/highlights";
+import TinyButton from "@/components/ui/tiny-button/tiny-button";
 
 type ManageHighlightsProps = {
   highlights: HighlightWithAuthorComplete[];
@@ -104,12 +105,20 @@ export default function ManageHighlights({
       key: "id",
       label: "ACTIONS",
       render: (_, item) => (
-        <Link
-          href={`/dashboard/highligths/update/${item.id}`}
-          className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm transition"
-        >
-          Edit
-        </Link>
+        <div className="flex gap-1.5">
+          <Link
+            href={`/dashboard/highligths/update/${item.id}`}
+            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm transition"
+          >
+            Edit
+          </Link>
+          <TinyButton
+            onClick={() => handleDeleteHighligth(item.id)}
+            className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded text-white text-sm transition"
+          >
+            Delete
+          </TinyButton>
+        </div>
       ),
     },
   ];
@@ -165,6 +174,52 @@ async function handleToggleActive(id: string) {
       error?.response?.data?.message ||
       error?.message ||
       "Unexpected error while updating your highligth.";
+    toast.error(errorMsg);
+  }
+}
+
+async function handleDeleteHighligth(id: string) {
+  const confirmed = await new Promise<boolean>((resolve) => {
+    toast("Are you sure you want to delete the highligth?", {
+      action: {
+        label: "Yes, delete",
+        onClick: () => {
+          resolve(true);
+        },
+      },
+      cancel: {
+        label: "Cancel",
+        onClick: () => {
+          resolve(false);
+        },
+      },
+      duration: 10000,
+      onDismiss: () => {
+        resolve(false);
+      },
+      onAutoClose: () => {
+        resolve(false);
+      },
+    });
+  });
+
+  if (!confirmed) return;
+
+  try {
+    const result = await deleteHighlight(id);
+    if (result.statusCode !== 200) {
+      const errorMsg =
+        result.message || "Error when delete your highligth status.";
+      toast.error(errorMsg);
+      return;
+    }
+    await revalidateHighlights();
+    toast.success(result.message || "Highligth successfully deleted!");
+  } catch (error: any) {
+    const errorMsg =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Unexpected error while deleting your highligth.";
     toast.error(errorMsg);
   }
 }

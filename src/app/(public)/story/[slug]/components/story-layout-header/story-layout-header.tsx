@@ -101,6 +101,9 @@ export default function StoryLayoutHeader({
           <Tag variant="gray">{storyData.status}</Tag>
         </div>
         <Title>{storyData.title}</Title>
+        <p className="text-gray-800 font-medium dark:text-white">
+          {storyData.author.username}
+        </p>
         <div className="flex sm:gap-8 sm:flex-nowrap flex-wrap gap-4">
           <IconText
             text={storyData.mainGenre}

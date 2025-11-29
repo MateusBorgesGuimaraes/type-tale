@@ -11,8 +11,12 @@ import { ArrowUpDown } from "lucide-react";
 import { CirclePlusIcon } from "lucide-react";
 import { toast } from "sonner";
 import { AnnouncementComplete } from "@/types/annoucements";
-import { toggleAnnouncementStatus } from "@/lib/api/annoucements";
+import {
+  deleteAnnouncement,
+  toggleAnnouncementStatus,
+} from "@/lib/api/annoucements";
 import { revalidateAnnouncements } from "@/actions/announcements";
+import TinyButton from "@/components/ui/tiny-button/tiny-button";
 
 type ManageAnnoucementsProps = {
   annoucements: AnnouncementComplete[];
@@ -92,12 +96,20 @@ export default function ManageAnnoucements({
       key: "id",
       label: "ACTIONS",
       render: (_, item) => (
-        <Link
-          href={`/dashboard/announcements/update/${item.id}`}
-          className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm transition"
-        >
-          Edit
-        </Link>
+        <div className="flex gap-1.5">
+          <Link
+            href={`/dashboard/announcements/update/${item.id}`}
+            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded text-white text-sm transition"
+          >
+            Edit
+          </Link>
+          <TinyButton
+            onClick={() => handleDeleteAnnouncement(item.id)}
+            className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded text-white text-sm transition"
+          >
+            Delete
+          </TinyButton>
+        </div>
       ),
     },
   ];
@@ -153,6 +165,52 @@ async function handleToggleActive(id: string) {
       error?.response?.data?.message ||
       error?.message ||
       "Unexpected error while updating your announcement.";
+    toast.error(errorMsg);
+  }
+}
+
+async function handleDeleteAnnouncement(id: string) {
+  const confirmed = await new Promise<boolean>((resolve) => {
+    toast("Are you sure you want to delete the announcement?", {
+      action: {
+        label: "Yes, delete",
+        onClick: () => {
+          resolve(true);
+        },
+      },
+      cancel: {
+        label: "Cancel",
+        onClick: () => {
+          resolve(false);
+        },
+      },
+      duration: 10000,
+      onDismiss: () => {
+        resolve(false);
+      },
+      onAutoClose: () => {
+        resolve(false);
+      },
+    });
+  });
+
+  if (!confirmed) return;
+
+  try {
+    const result = await deleteAnnouncement(id);
+    if (result.statusCode !== 200) {
+      const errorMsg =
+        result.message || "Error when delete your announcement status.";
+      toast.error(errorMsg);
+      return;
+    }
+    await revalidateAnnouncements();
+    toast.success(result.message || "Announcement successfully deleted!");
+  } catch (error: any) {
+    const errorMsg =
+      error?.response?.data?.message ||
+      error?.message ||
+      "Unexpected error while deleting your announcement.";
     toast.error(errorMsg);
   }
 }

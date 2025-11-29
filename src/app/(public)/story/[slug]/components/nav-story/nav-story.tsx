@@ -19,7 +19,9 @@ export default function NavStory({ slug }: NavStoryProps) {
     <div className="full-bleed bg-gray-100 dark:bg-gray-800 mt-6 pb-8 pt-8">
       <nav className="wrapper border-b border-gray-300 dark:border-gray-700 flex gap-12">
         {links.map(({ href, label }) => {
-          const isActive = pathname === href;
+          const normalizedPathname = decodeURIComponent(pathname);
+          const normalizedHref = decodeURIComponent(href);
+          const isActive = normalizedPathname === normalizedHref;
 
           return (
             <Link

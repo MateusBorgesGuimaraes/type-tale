@@ -62,3 +62,9 @@ export async function toggleAnnouncementStatus(announcementId: string) {
     method: "PATCH",
   });
 }
+
+export async function deleteAnnouncement(announcementId: string) {
+  return apiFetch(`/announcements/${announcementId}`, {
+    method: "DELETE",
+  });
+}

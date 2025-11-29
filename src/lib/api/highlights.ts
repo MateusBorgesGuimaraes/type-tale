@@ -54,3 +54,9 @@ export async function toggleHighlightStatus(highlightId: string) {
     method: "PATCH",
   });
 }
+
+export async function deleteHighlight(highlightId: string) {
+  return apiFetch(`/highlights/${highlightId}`, {
+    method: "DELETE",
+  });
+}

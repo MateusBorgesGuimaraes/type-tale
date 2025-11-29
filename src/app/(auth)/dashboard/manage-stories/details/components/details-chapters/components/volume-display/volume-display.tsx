@@ -9,15 +9,20 @@ import CustomCheckbox from "@/components/ui/custom-checkbox/custom-checkbox";
 import { useState } from "react";
 import Modal from "@/components/ui/modal/modal";
 import UpdateVolumeForm from "@/components/ui/forms/update-volume-form";
+import { deleteChapter, toggleChapterIsDraft } from "@/lib/api/chapters";
+import { toast } from "sonner";
+import { revalidateChapters } from "@/actions/chapters";
 
 type VolumeDisplayProps = {
   volumeAndChapter: VolumeWithChapters[];
   storyId: string;
+  storySlug: string;
 };
 
 export default function VolumeDisplay({
   volumeAndChapter,
   storyId,
+  storySlug,
 }: VolumeDisplayProps) {
   const [editingVolumeId, setEditingVolumeId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -25,9 +30,70 @@ export default function VolumeDisplay({
     return String(index + 1).padStart(3, "0");
   };
 
-  const handlePublishToggle = (chapterId: string, currentStatus: boolean) => {
-    //Implementar lógica de publicação/despublicação com backend
+  const handlePublishToggle = async (chapterId: string) => {
+    try {
+      const result = await toggleChapterIsDraft(chapterId);
+      if (result.statusCode !== 200) {
+        const errorMsg =
+          result.message || "Error when toggle your chapter status.";
+        toast.error(errorMsg);
+        return;
+      }
+      await revalidateChapters(storySlug);
+      toast.success(result.message || "Chapter successfully updateded!");
+    } catch (error: any) {
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Unexpected error while updating your chapter.";
+      toast.error(errorMsg);
+    }
   };
+
+  async function handleDeleteChapter(id: string) {
+    const confirmed = await new Promise<boolean>((resolve) => {
+      toast("Are you sure you want to delete the chapter?", {
+        action: {
+          label: "Yes, delete",
+          onClick: () => {
+            resolve(true);
+          },
+        },
+        cancel: {
+          label: "Cancel",
+          onClick: () => {
+            resolve(false);
+          },
+        },
+        duration: 10000,
+        onDismiss: () => {
+          resolve(false);
+        },
+        onAutoClose: () => {
+          resolve(false);
+        },
+      });
+    });
+
+    if (!confirmed) return;
+
+    try {
+      const result = await deleteChapter(id);
+      if (result.statusCode !== 200) {
+        const errorMsg = result.message || "Error when delete your chapter.";
+        toast.error(errorMsg);
+        return;
+      }
+      await revalidateChapters(storySlug);
+      toast.success(result.message || "Chapter successfully deleted!");
+    } catch (error: any) {
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Unexpected error while deleting your chapter.";
+      toast.error(errorMsg);
+    }
+  }
 
   return (
     <>
@@ -70,9 +136,7 @@ export default function VolumeDisplay({
                   <div className="flex items-center gap-3 flex-1">
                     <CustomCheckbox
                       checked={!chapter.isDraft}
-                      onChangeAction={() =>
-                        handlePublishToggle(chapter.id, !chapter.isDraft)
-                      }
+                      onChangeAction={() => handlePublishToggle(chapter.id)}
                       isChecked={chapter.isDraft}
                     />
                     <Link
@@ -97,12 +161,20 @@ export default function VolumeDisplay({
                         ? formatDateBR(chapter.publishedAt)
                         : "DRAFT"}
                     </span>
-                    <Link
-                      href={`/dashboard/manage-stories/edit-chapter/${chapter.id}`}
-                      className="text-white font-semibold py-1 px-3 rounded-sm cursor-pointer flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm order-1 sm:order-2"
-                    >
-                      EDIT
-                    </Link>
+                    <div className="flex gap-1.5 order-2">
+                      <Link
+                        href={`/dashboard/manage-stories/edit-chapter/${chapter.id}`}
+                        className="text-white font-semibold py-1 px-3 rounded-sm cursor-pointer flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm order-1 sm:order-2"
+                      >
+                        EDIT
+                      </Link>
+                      <TinyButton
+                        onClick={() => handleDeleteChapter(chapter.id)}
+                        className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded text-white text-sm transition"
+                      >
+                        Delete
+                      </TinyButton>
+                    </div>
                   </div>
                 </li>
               ))
